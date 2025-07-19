@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uniffy - My Mentors</title>
+    <link rel="stylesheet" href="/static/css/mentors.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <img
+        id="Uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+      />
+      <div class="navbar-user">
+        <div class="profile-button">
+          <img src="static/img/Male.png" alt="Profile" class="profile-image" />
+        </div>
+      </div>
+    </nav>
+
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <ul class="sidebar-menu">
+          <li class="sidebar-item active">
+            <div class="homebutton" onclick="window.location.href='/home';">
+              <img src="static/img/home.svg" alt="Profile" class="nav-svg" />
+              <h3>Home</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="mentorsbutton"
+              onclick="window.location.href='/mentors';"
+            >
+            <img src="static/img/mentors.svg" alt="Profile" class="nav-svg" />
+              <h3>My mentors</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="coursesbutton"
+              onclick="window.location.href='/courses';"
+            >
+            <img src="static/img/courses.svg" alt="Profile" class="nav-svg" />
+              <h3>My courses</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="messagebutton"
+              onclick="window.location.href='/messages';"
+            >
+            <img src="static/img/message.svg" alt="Profile" class="nav-svg" />
+              <h3>Messages</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="explorebutton"
+              onclick="window.location.href='/explore';"
+            >
+            <img src="static/img/explore.svg" alt="Profile" class="nav-svg" />
+              <h3>Explore</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div class="logout" onclick="window.location.href='/logout';">
+              <h3>Log out ➜]</h3>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+    <div class="courses-section">
+      <main class="mentors-section">
+        <h2 class="section-title">Your Mentors</h2>
+        <div class="mentor-grid">
+          <!-- MENTOR CARD -->
+          <div class="mentor-card">
+            <div class="img-container"><img src="static/img/blackgirl.png" alt="Mentor 1" class="mentor-img" /></div>
+            
+            <h3 class="mentor-name">Angela Mwangi</h3>
+            <p class="mentor-career">Software Engineering @ Strathmore</p>
+            <button class="mentor-btn">Message</button>
+          </div>
+
+          <div class="mentor-card">
+            <div class="img-container"><img src="static/img/blackguy.png" alt="Mentor 1" class="mentor-img" /></div>
+            <h3 class="mentor-name">Carlos Otieno</h3>
+            <p class="mentor-career">Architecture @ JKUAT</p>
+            <button class="mentor-btn">Message</button>
+          </div>
+
+          <div class="mentor-card">
+            <div class="img-container"><img src="static/img/blackmuslim.jpeg" alt="Mentor 1" class="mentor-img" /></div>
+            <h3 class="mentor-name">Zahra Yusuf</h3>
+            <p class="mentor-career">Medicine @ UON</p>
+            <button class="mentor-btn">Message</button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>

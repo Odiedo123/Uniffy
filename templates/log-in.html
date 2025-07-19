@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/log-in.css" />
+    <title>Uniffy - Login</title>
+  </head>
+  <body>
+    <div id="navigation-bar">
+      <img
+        id="Uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+      />
+      <h2>"Connecting generations"</h2>
+      <button
+        id="navigation-button"
+        onclick="window.location.href='/register';"
+      >
+        Sign Up
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4 12H20"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14 6L20 12L14 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="retro-grid">
+      <div class="retro-grid-inner">
+        <div class="retro-grid-pattern"></div>
+      </div>
+      <div class="retro-grid-gradient"></div>
+    </div>
+    <div id="log-in-section" class="fade-in-2">
+      <h2 id="main-pull">Welcome Back!</h2>
+      <form action="{{ url_for('login') }}" method="POST">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          autocomplete="off"
+          required
+        />
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          autocomplete="off"
+          required
+        />
+
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+    <div id="toast-container"></div>
+    <script>
+      // Show toast messages
+      function showToast(message, type = "info") {
+        const toastContainer = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Remove the toast after the animation ends
+        setTimeout(() => {
+          toast.remove();
+        }, 3500);
+      }
+
+      // Check for an error message passed from Flask
+      const errorMessage = "{{ error }}";
+      console.log("{{error}}");
+      if (errorMessage) {
+        showToast(errorMessage);
+      }
+    </script>
+  </body>
+</html>

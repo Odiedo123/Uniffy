@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uniffy - My Courses</title>
+    <link rel="stylesheet" href="/static/css/courses.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <img
+        id="Uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+      />
+      <div class="navbar-user">
+        <div class="profile-button">
+          <img src="static/img/Male.png" alt="Profile" class="profile-image" />
+        </div>
+      </div>
+    </nav>
+
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <ul class="sidebar-menu">
+          <li class="sidebar-item active">
+            <div class="homebutton" onclick="window.location.href='/home';">
+              <img src="static/img/home.svg" alt="Profile" class="nav-svg" />
+              <h3>Home</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="mentorsbutton"
+              onclick="window.location.href='/mentors';"
+            >
+            <img src="static/img/mentors.svg" alt="Profile" class="nav-svg" />
+              <h3>My mentors</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="coursesbutton"
+              onclick="window.location.href='/courses';"
+            >
+            <img src="static/img/courses.svg" alt="Profile" class="nav-svg" />
+              <h3>My courses</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="messagebutton"
+              onclick="window.location.href='/messages';"
+            >
+            <img src="static/img/message.svg" alt="Profile" class="nav-svg" />
+              <h3>Messages</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div
+              class="explorebutton"
+              onclick="window.location.href='/explore';"
+            >
+            <img src="static/img/explore.svg" alt="Profile" class="nav-svg" />
+              <h3>Explore</h3>
+            </div>
+          </li>
+          <li class="sidebar-item">
+            <div class="logout" onclick="window.location.href='/logout';">
+              <h3>Log out ➜]</h3>
+            </div>
+          </li>
+        </ul>
+      </aside>
+
+    <div class="courses-section">
+      <h1 class="section-title">Your Courses</h1>
+      <div class="course-grid">
+        <div class="course-card">
+          <img src="static/img/coding.jpg" class="course-img" alt="Coding" />
+          <h2 class="course-title">Web Development</h2>
+          <p class="course-desc">
+            HTML, CSS, JavaScript - Frontend Foundations
+          </p>
+          <progress value="70" max="100"></progress>
+          <button class="course-btn">Continue</button>
+        </div>
+
+        <div class="course-card">
+          <img
+            src="https://img.icons8.com/color/96/000000/artificial-intelligence.png"
+            class="course-img"
+            alt="AI"
+          />
+          <h2 class="course-title">Intro to AI</h2>
+          <p class="course-desc">
+            Understanding the basics of machine learning
+          </p>
+          <progress value="40" max="100"></progress>
+          <button class="course-btn">Continue</button>
+        </div>
+
+        <div class="course-card">
+          <img
+            src="https://img.icons8.com/color/96/000000/physics.png"
+            class="course-img"
+            alt="Physics"
+          />
+          <h2 class="course-title">Physics for Engineers</h2>
+          <p class="course-desc">Mechanics, Thermodynamics, and more</p>
+          <progress value="90" max="100"></progress>
+          <button class="course-btn">Continue</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".course-card");
+        cards.forEach((card) => {
+          const progress = card.getAttribute("data-progress");
+          const fill = card.querySelector(".progress-fill");
+          fill.style.width = "0%";
+          setTimeout(() => {
+            fill.style.width = progress + "%";
+          }, 300);
+        });
+      });
+    </script>
+  </body>
+</html>

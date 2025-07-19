@@ -1,0 +1,203 @@
+.title {
+  color: white;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 31, 63, 0.95);
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 30px;
+}
+
+nav:hover {
+  color: var(--blue);
+}
+
+.signup,
+.login,
+.home {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  background-color: transparent;
+  color: white;
+}
+
+.signup:hover {
+  color: #0077cc;
+}
+
+.login:hover {
+  color: #0077cc;
+}
+
+.home:hover {
+  color: #0077cc;
+}
+
+.frontdiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 900px;
+  width: auto;
+  margin: auto;
+  background-color: transparent;
+}
+
+.title2 {
+  color: white;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: 700;
+  font-size: larger;
+  margin-bottom: 15px;
+  font-size: 80px;
+}
+
+#Uniffy-icon {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
+}
+
+#Uniffy-icon2 {
+  width: 290px;
+  height: auto;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.mainp {
+  color: whitesmoke;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 30px;
+}
+
+.getstarted {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-block;
+  background-color: rgb(236, 234, 234);
+  color: black;
+  width: 150px;
+  height: 50px;
+  margin-top: 30px;
+}
+
+.body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.topdiv {
+  background-color: #060101;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.footer {
+  background-color: rgba(0, 31, 63, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin-top: 0px;
+  height: 20px;
+}
+
+.footertxt {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  color: white;
+  font-size: large;
+  font-weight: 400;
+}
+
+.divonabout {
+  background-color: white;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aboutdiv {
+  max-width: 900px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: center;
+  animation: fadeInUp 3s ease-in-out;
+  animation-fill-mode: both;
+}
+
+.abouttitle {
+  font-size: 2.5em;
+  color: #003366;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.aboutp1,
+.aboutp2,
+.aboutp3,
+.aboutp4 {
+  font-size: 1.1em;
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.aboutp1 {
+  animation-delay: 0.3s;
+}
+
+.aboutp2 {
+  animation-delay: 0.5s;
+}
+
+.aboutp3 {
+  animation-delay: 0.7s;
+}
+
+.aboutp4 {
+  animation-delay: 0.9s;
+}
+
+/* Keyframes for fade in up */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

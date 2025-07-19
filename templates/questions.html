@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uniffy – Career Quiz</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Nunito", sans-serif;
+        background-color: #f2f2f2;
+        color: #333;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 3rem auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      h2 {
+        color: #001f3f;
+      }
+
+      .question h3 {
+        margin-bottom: 1rem;
+      }
+
+      .options label {
+        display: block;
+        margin: 0.5rem 0;
+        cursor: pointer;
+      }
+
+      button {
+        background-color: #0074d9;
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #005bb5;
+      }
+
+      #result {
+        margin-top: 2rem;
+        display: none;
+      }
+
+      /* Animation */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Progress Bar */
+      .progress-container {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 0 0 10px 10px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #0074d9;
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Career Path Quiz</h2>
+      <form id="quizForm">
+        <div id="questionBox" class="fade-in"></div>
+        <button type="submit" id="nextBtn">Next</button>
+      </form>
+      <div id="result"></div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <script>
+      const questions = [
+        [
+          "Which subject do you enjoy most?",
+          [
+            "Computer Studies:tech",
+            "Biology or Chemistry:science",
+            "Business Studies:business",
+            "Literature or Drama:arts",
+            "CRE / Social Studies:social",
+          ],
+        ],
+        [
+          "What kind of tasks do you enjoy?",
+          [
+            "Coding or fixing tech:tech",
+            "Solving science problems:science",
+            "Planning or managing money:business",
+            "Writing or performing:arts",
+            "Helping others solve problems:social",
+          ],
+        ],
+        [
+          "Which career excites you the most?",
+          [
+            "App Developer:tech",
+            "Doctor:science",
+            "CEO or Investor:business",
+            "Journalist or Actor:arts",
+            "Counselor or Teacher:social",
+          ],
+        ],
+        [
+          "How do you solve a big problem?",
+          [
+            "Use software/tools:tech",
+            "Research facts & logic:science",
+            "Think of profits/risks:business",
+            "Tell a story or visualise it:arts",
+            "Talk to people & understand them:social",
+          ],
+        ],
+        [
+          "What’s your dream workplace?",
+          [
+            "Tech company or lab:tech",
+            "Hospital or research center:science",
+            "Bank, startup or office:business",
+            "Studio or creative agency:arts",
+            "NGO or school:social",
+          ],
+        ],
+        [
+          "What kind of skills do you like building?",
+          [
+            "Coding, problem solving:tech",
+            "Observation, experiments:science",
+            "Selling, planning:business",
+            "Expressing ideas:arts",
+            "Listening and empathy:social",
+          ],
+        ],
+        [
+          "What clubs would you join?",
+          [
+            "Coding / Robotics Club:tech",
+            "Science / Wildlife Club:science",
+            "Entrepreneurship Club:business",
+            "Drama / Writing Club:arts",
+            "Peer Counselors Club:social",
+          ],
+        ],
+        [
+          "How do you spend free time?",
+          [
+            "Try new apps or tech tools:tech",
+            "Watch science shows:science",
+            "Think of business ideas:business",
+            "Write or design something:arts",
+            "Chat and help friends:social",
+          ],
+        ],
+        [
+          "What’s your ideal project?",
+          [
+            "Build a working app:tech",
+            "Make a science discovery:science",
+            "Start a school business:business",
+            "Film a creative video:arts",
+            "Organize a help event:social",
+          ],
+        ],
+        [
+          "What motivates you?",
+          [
+            "Solving tech problems:tech",
+            "Understanding the body or nature:science",
+            "Financial freedom:business",
+            "Expressing yourself:arts",
+            "Making people’s lives better:social",
+          ],
+        ],
+        [
+          "Which tool would you pick?",
+          [
+            "Laptop:tech",
+            "Lab kit:science",
+            "Calculator / Notebook:business",
+            "Microphone / Sketchpad:arts",
+            "Journal / Phone for talking:social",
+          ],
+        ],
+        [
+          "What’s your biggest strength?",
+          [
+            "Tech skills:tech",
+            "Curiosity / research:science",
+            "Leadership / business sense:business",
+            "Creativity:arts",
+            "Patience and listening:social",
+          ],
+        ],
+        [
+          "Who inspires you most?",
+          [
+            "Elon Musk or engineers:tech",
+            "Scientists like Marie Curie:science",
+            "Jeff Bezos or CEOs:business",
+            "Poets, authors, or actors:arts",
+            "Malala / teachers / activists:social",
+          ],
+        ],
+        [
+          "What’s your approach to solving conflict?",
+          [
+            "Use logic / technology:tech",
+            "Find evidence / facts:science",
+            "Negotiate for gain:business",
+            "Write / express feelings:arts",
+            "Listen and mediate:social",
+          ],
+        ],
+        [
+          "If you had KES 100K, what would you do?",
+          [
+            "Buy tech tools and build stuff:tech",
+            "Invest in science equipment:science",
+            "Start a business:business",
+            "Create art / write a book:arts",
+            "Help community or support a cause:social",
+          ],
+        ],
+        [
+          "What kind of feedback do you enjoy?",
+          [
+            "You fixed this!:tech",
+            "You discovered something!:science",
+            "You’re a leader!:business",
+            "You inspire me!:arts",
+            "You changed my life!:social",
+          ],
+        ],
+        [
+          "What kind of school trips do you enjoy?",
+          [
+            "Tech hubs:tech",
+            "Science labs or hospitals:science",
+            "Company offices / trade expos:business",
+            "Museums / theatres:arts",
+            "Orphanages / community centres:social",
+          ],
+        ],
+        [
+          "What kind of games do you enjoy?",
+          [
+            "Puzzle or coding games:tech",
+            "Trivia / logic games:science",
+            "Business simulation games:business",
+            "Creative or story games:arts",
+            "Team-based games:social",
+          ],
+        ],
+        [
+          "What would you teach others?",
+          [
+            "How to code or use tech:tech",
+            "How the body works:science",
+            "How to start a business:business",
+            "How to write or perform:arts",
+            "How to listen and help:social",
+          ],
+        ],
+        [
+          "What kind of mentor would you want?",
+          [
+            "Tech innovator:tech",
+            "Medical or science expert:science",
+            "Business leader:business",
+            "Artist or speaker:arts",
+            "Life coach or community leader:social",
+          ],
+        ],
+      ];
+
+      let currentIndex = 0;
+      const scores = { tech: 0, science: 0, business: 0, arts: 0, social: 0 };
+
+      const quizForm = document.getElementById("quizForm");
+      const questionBox = document.getElementById("questionBox");
+      const resultBox = document.getElementById("result");
+      const nextBtn = document.getElementById("nextBtn");
+      const progressBar = document.getElementById("progressBar");
+
+      function renderQuestion(index) {
+        const [qText, options] = questions[index];
+        questionBox.classList.remove("fade-in");
+        void questionBox.offsetWidth; // trigger reflow
+        questionBox.innerHTML = `
+          <div class="question">
+            <h3>${index + 1}. ${qText}</h3>
+            <div class="options">
+              ${options
+                .map((option) => {
+                  const [text, value] = option.split(":");
+                  return `<label><input type="radio" name="answer" value="${value}" required> ${text}</label>`;
+                })
+                .join("")}
+            </div>
+          </div>
+      `;
+
+        questionBox.classList.add("fade-in");
+
+        // update progress
+        const progressPercent = ((index + 1) / questions.length) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+      }
+
+      renderQuestion(currentIndex);
+
+      quizForm.onsubmit = function (e) {
+        e.preventDefault();
+        const answer = document.querySelector("input[name='answer']:checked");
+        if (!answer) return;
+
+        scores[answer.value]++;
+        currentIndex++;
+
+        if (currentIndex < questions.length) {
+          renderQuestion(currentIndex);
+        } else {
+          quizForm.style.display = "none";
+          const best = Object.keys(scores).reduce((a, b) =>
+            scores[a] > scores[b] ? a : b
+          );
+          const careers = {
+            tech: "Software Developer, Data Scientist, Game Developer",
+            science: "Doctor, Biologist, Pharmacist, Researcher",
+            business: "Entrepreneur, Marketer, Financial Analyst",
+            arts: "Actor, Author, Illustrator, Journalist",
+            social: "Counselor, Teacher, NGO Staff, Community Worker",
+          };
+          resultBox.innerHTML = `<h3>Your Best Fit Career Path:</h3>
+            <p><strong>${best.toUpperCase()}</strong>: ${careers[best]}</p>
+            <a href="/home"><button>Go to Home</button></a>`;
+          resultBox.style.display = "block";
+          progressBar.style.width = "100%";
+          fetch("/questions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              result: best,
+              scores: scores,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log("Result saved:", data);
+            })
+            .catch((err) => {
+              console.error("Error saving result:", err);
+            });
+        }
+      };
+    </script>
+  </body>
+</html>
