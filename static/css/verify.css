@@ -7,6 +7,11 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+#span {
+  color: rgb(80, 80, 80);
+  font-size: 19px;
+}
+
 input {
   border: none;
   border-bottom: 1px solid #007bff; /* Soft blue */
@@ -14,15 +19,14 @@ input {
   height: 30px;
   width: 250px;
   font-size: 17px;
-  transition: border-bottom-color 0.3s ease, border-bottom-width 0.3s ease,
-    background-color 0.3s ease;
+  transition: 0.3s;
   background-color: transparent;
   color: #333;
   margin: 5px;
 }
 
 input:focus {
-  border-bottom: 2px solid #0056b3; /* Darker blue */
+  border-bottom: 1px solid #0056b3; /* Darker blue */
   background-color: rgba(0, 123, 255, 0.05); /* subtle focus bg */
 }
 
@@ -64,8 +68,9 @@ hr.gradient {
     rgba(0, 255, 113, 1) 100%
   );
 }
-s #name {
-  font-size: 17px;
+
+#name {
+  font-size: 19px;
 }
 
 #navigation-bar {

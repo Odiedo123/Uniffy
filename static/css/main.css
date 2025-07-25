@@ -33,6 +33,7 @@ nav:hover {
   display: inline-block;
   background-color: transparent;
   color: white;
+  transition: 0.3s;
 }
 
 .signup:hover {
@@ -77,6 +78,12 @@ nav:hover {
   cursor: pointer;
 }
 
+#quote {
+  color: white;
+  font-size: 19px;
+  text-align: center;
+}
+
 #Uniffy-icon2 {
   width: 290px;
   height: auto;
@@ -92,18 +99,50 @@ nav:hover {
 }
 
 .getstarted {
-  padding: 0.6rem 1.2rem;
+  position: relative;
+  padding-left: 30px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   background-color: rgb(236, 234, 234);
+  border: 1px solid white;
   color: black;
-  width: 150px;
+  width: 170px;
   height: 50px;
   margin-top: 30px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.getstarted:hover {
+  border: 1px solid rgb(40, 40, 245);
+}
+
+.getstarted .label {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.getstarted .arrow {
+  margin-left: 8px;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.getstarted:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.getstarted:hover .label {
+  transform: translateX(-10px);
 }
 
 .body {
@@ -112,9 +151,10 @@ nav:hover {
 }
 
 .topdiv {
-  background-color: #060101;
+  background-image: Url(../img/background-img.jpg);
   background-repeat: no-repeat;
   background-size: cover;
+  height: 65vh;
 }
 
 .footer {
@@ -148,6 +188,7 @@ nav:hover {
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid grey;
   padding: 40px;
   text-align: center;
   animation: fadeInUp 3s ease-in-out;

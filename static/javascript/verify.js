@@ -8,8 +8,7 @@ fileInput.addEventListener("change", function () {
     const reader = new FileReader();
     reader.onload = function (e) {
       profilePic.style.backgroundImage = `url('${e.target.result}')`;
-      // Automatically submit the form when image is selected
-      form.submit();
+      // Automatically submit the form when image is selected: form.submit();
     };
     reader.readAsDataURL(file);
   }

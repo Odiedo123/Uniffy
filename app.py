@@ -147,10 +147,19 @@ def register():
     return render_template('register.html')
 
 
-@app.route("/verify")
+@app.route('/verify')
 @login_required
 def verify_page():
-    return render_template('verify.html')
+    user_id = session.get('user_id')
+
+    user_data = supabase.table('users').select('name').eq('id', user_id).execute()
+
+    if user_data.data:
+        name = user_data.data[0]['name']
+    else:
+        name = "User"
+
+    return render_template('verify.html', name=name)
 
 
 @app.route("/questions", methods=["GET", "POST"])
