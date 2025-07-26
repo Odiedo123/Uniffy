@@ -111,7 +111,6 @@ def login():
 
     return render_template('log-in.html')
 
-
 @app.route('/register', methods=['GET', 'POST'])
 @limiter.limit("20 per minute")
 def register():
@@ -121,20 +120,20 @@ def register():
         name = request.form['name']
         account_type = request.form['account_type'].strip().lower()  # 'student' or 'university'
 
-        #! Check if email already exists
+        # Check if email already exists
         existing_user = supabase.table('users').select('*').eq('email', email).execute()
         if existing_user.data:
             error = "This email is already registered."
             return render_template('register.html', error=error)
 
-        #! Hash the password using bcrypt
+        # Hash the password using bcrypt
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        #! Set verification status
+        # Set verification status
         is_verified = None if account_type == 'student' else False
 
-        #! Insert the new user
-        supabase.table('users').insert({
+        # Insert the new user
+        result = supabase.table('users').insert({
             'email': email,
             'password': hashed_password,
             'name': name,
@@ -142,7 +141,26 @@ def register():
             'is_verified': is_verified
         }).execute()
 
-        return redirect(url_for('login'))
+        # Fetch newly created user from Supabase
+        user_data = supabase.table('users').select('*').eq('email', email).execute()
+        if not user_data.data:
+            error = "Something went wrong. Please try again."
+            return render_template('register.html', error=error)
+
+        user = user_data.data[0]
+
+        # Set session values
+        session['user_id'] = user['id']
+        session['is_verified'] = user.get('is_verified', False)
+        session['account_type'] = account_type
+
+        # Redirect based on account type
+        if account_type == 'student':
+            return redirect('/questions')
+        elif account_type == 'university':
+            return redirect('/verify')
+        else:
+            return redirect('/home')
 
     return render_template('register.html')
 

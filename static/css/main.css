@@ -1,244 +1,274 @@
-.title {
-  color: white;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+body {
+  height: auto;
+  margin: 0;
+  overflow-x: hidden;
 }
 
-.nav {
+* {
+  font-family: "Inter", sans-serif;
+}
+
+span {
+  background-color: #1bffd9;
+  padding: 2px;
+}
+
+button {
+  width: 220px;
+  height: 60px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid grey;
+  background-color: #004080;
+  color: white;
+  align-self: center;
+  justify-self: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#navigation-bar {
+  position: fixed;
   display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 31, 63, 0.95);
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  text-align: center;
   top: 0;
+  left: 0;
+  background-color: rgba(0, 31, 63, 0.95);
+  height: 85px;
+  width: 100vw;
   z-index: 1000;
-  height: 30px;
 }
 
-nav:hover {
-  color: var(--blue);
-}
-
-.signup,
-.login,
-.home {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-block;
-  background-color: transparent;
-  color: white;
-  transition: 0.3s;
-}
-
-.signup:hover {
-  color: #0077cc;
-}
-
-.login:hover {
-  color: #0077cc;
-}
-
-.home:hover {
-  color: #0077cc;
-}
-
-.frontdiv {
+#navigation-button {
+  margin: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  background-color: var(--white);
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 900px;
-  width: auto;
-  margin: auto;
-  background-color: transparent;
+  align-items: center;
+  margin-right: 20px;
+  padding: 25px;
+  width: 150px;
+  border: 1px solid #004080;
+  background-color: white;
+  color: black;
+  transition: 0.2s ease;
+  font-size: 16px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid grey;
+  cursor: pointer;
 }
 
-.title2 {
-  color: white;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  font-weight: 700;
-  font-size: larger;
-  margin-bottom: 15px;
-  font-size: 80px;
+#navigation-button:hover {
+  border: 1px solid rgb(255, 0, 255);
+  box-shadow: -1px 1px 149px -36px rgba(255, 0, 255, 0.75);
+  color: rgba(255, 0, 255, 0.75);
 }
 
 #Uniffy-icon {
   width: 150px;
   height: auto;
-  cursor: pointer;
-}
-
-#quote {
-  color: white;
-  font-size: 19px;
-  text-align: center;
-}
-
-#Uniffy-icon2 {
-  width: 290px;
-  height: auto;
   margin-left: 20px;
   cursor: pointer;
 }
 
-.mainp {
-  color: whitesmoke;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  font-size: 30px;
+#button-section {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
-.getstarted {
-  position: relative;
-  padding-left: 30px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+#nav-text {
+  color: white;
+  margin-left: 100px;
+  font-size: 20px;
   text-align: center;
-  background-color: rgb(236, 234, 234);
-  border: 1px solid white;
-  color: black;
-  width: 170px;
-  height: 50px;
-  margin-top: 30px;
-  overflow: hidden;
-  transition: 0.3s;
+  justify-self: center;
+  align-self: center;
 }
 
-.getstarted:hover {
-  border: 1px solid rgb(40, 40, 245);
+.first-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15vh;
+  gap: 20px;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  padding-top: 50px;
 }
 
-.getstarted .label {
-  display: inline-block;
-  transition: transform 0.3s ease;
+.first-section h1 {
+  font-size: 40px;
 }
 
-.getstarted .arrow {
-  margin-left: 8px;
-  opacity: 0;
-  transform: translateX(-5px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.getstarted:hover .arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.getstarted:hover .label {
-  transform: translateX(-10px);
-}
-
-.body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-}
-
-.topdiv {
-  background-image: Url(../img/background-img.jpg);
+#img-container {
+  width: 80vw;
+  height: 70vh;
+  border-radius: 20px;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 65vh;
+  background-position: center;
+  background-size: 100%;
+  background-image: url(../img/background-img.jpg);
+  cursor: pointer;
+  transition: 0.7s;
 }
 
-.footer {
-  background-color: rgba(0, 31, 63, 0.95);
+#img-container:hover {
+  transform: translateY(-10px);
+}
+
+.p1,
+.p2,
+.p3,
+.p4 {
+  font-size: 20px;
+}
+
+.second-section {
+  margin-top: 200px;
+  width: 100vw;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  padding: 1rem;
-  margin-top: 0px;
-  height: 20px;
+  align-items: center;
+  gap: 20px;
 }
 
-.footertxt {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+.second-section .text-section h2 {
+  font-family: "Inter", sans-serif;
   color: white;
-  font-size: large;
-  font-weight: 400;
+  font-size: 40px;
 }
 
-.divonabout {
-  background-color: white;
-  padding: 60px 20px;
+.second-section .img-section {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  gap: 20px;
+}
+#security {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 200px;
+  width: 400px;
+  border-radius: 15px;
+  padding: 12px;
+  gap: 10px;
+  cursor: pointer;
+  border: 1px solid #26293c;
+  z-index: 1;
+  overflow: hidden;
+  transition: 0.2s ease;
 }
 
-.aboutdiv {
-  max-width: 900px;
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid grey;
-  padding: 40px;
-  text-align: center;
-  animation: fadeInUp 3s ease-in-out;
-  animation-fill-mode: both;
+#security:hover {
+  padding: 15px;
 }
 
-.abouttitle {
-  font-size: 2.5em;
-  color: #003366;
-  margin-bottom: 30px;
-  font-weight: bold;
-}
-
-.aboutp1,
-.aboutp2,
-.aboutp3,
-.aboutp4 {
-  font-size: 1.1em;
-  color: #333;
-  line-height: 1.7;
-  margin-bottom: 20px;
+#security::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  border-radius: 17px;
+  padding: 3px;
+  background: linear-gradient(90deg, #4ee1ec, #2104e0, #4ee1ec);
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  transition: opacity 0.3s ease;
   opacity: 0;
-  transform: translateY(40px);
-  animation: fadeInUp 1s ease-out forwards;
+  animation: borderGlow 3s linear infinite;
 }
 
-.aboutp1 {
-  animation-delay: 0.3s;
+#security:hover::before {
+  opacity: 1;
 }
 
-.aboutp2 {
-  animation-delay: 0.5s;
-}
-
-.aboutp3 {
-  animation-delay: 0.7s;
-}
-
-.aboutp4 {
-  animation-delay: 0.9s;
-}
-
-/* Keyframes for fade in up */
-@keyframes fadeInUp {
+@keyframes borderGlow {
   0% {
-    opacity: 0;
-    transform: translateY(40px);
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    opacity: 1;
-    transform: translateY(0);
+    background-position: 0% 50%;
   }
+}
+
+.text-2 p {
+  font-family: "Inter", sans-serif;
+  color: #8a96b1;
+}
+
+.text-2 h2 {
+  font-family: "Inter", sans-serif;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.security-img {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+
+#security-icon1 {
+  height: 80px;
+  width: 80px;
+}
+
+.fourth-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 70vh;
+  margin-top: 100px;
+}
+
+#text-section,
+#img-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+}
+
+#text-section {
+  padding-left: 50px;
+  flex-direction: column;
+}
+
+#mentorship-gif {
+  width: 400px;
+  height: auto;
+}
+
+#sign-up {
+  height: 50px;
+}
+
+#custom-footer {
+  height: 40vh;
+  width: 100vw;
+  background-color: black;
 }

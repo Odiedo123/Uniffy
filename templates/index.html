@@ -11,92 +11,147 @@
       href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="static/img/uniffy-icon.svg" type="image/svg+xml" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="body">
-    <nav class="nav">
+  <body>
+    <div id="navigation-bar">
       <img
         id="Uniffy-icon"
         src="static/img/logo.png"
-        alt="uniffy Icon"
+        alt="uniffy-icon"
         onclick="window.location.href='/';"
       />
-      <h2 id="quote">"Connecting generations"</h2>
-      <div class="buttons">
-        <button onclick="window.location.href='/register';" class="signup">
+      <h2 id="nav-text">"Connecting generations"</h2>
+      <div id="button-section">
+        <button
+          id="navigation-button"
+          onclick="window.location.href='/register';"
+        >
           Sign Up
-        </button>
-        <button onclick="window.location.href='/login';" class="login">
-          Log In
-        </button>
-      </div>
-    </nav>
-    <section>
-      <div class="topdiv">
-        <div class="frontdiv">
-          <img id="Uniffy-icon2" src="static/img/logo.png" alt="uniffy Icon" />
-          <p class="mainp">
-            Guided by those who’ve walked the path — Uniffy connects you to your
-            future.
-          </p>
-          <button
-            class="getstarted"
-            onclick="window.location.href='/register';"
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <span class="label">Get Started</span>
-            <svg
-              class="arrow"
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M5 12h14M13 6l6 6-6 6"
-                stroke="black"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
+            <path
+              d="M4 12H20"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M14 6L20 12L14 18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          id="navigation-button"
+          onclick="window.location.href='/register';"
+        >
+          Log In
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 12H20"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M14 6L20 12L14 18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
       </div>
-    </section>
-    <section>
-      <div class="divonabout">
-        <div class="aboutdiv">
-          <h1 class="abouttitle">About Us</h1>
-          <div class="about1div">
-            <p class="aboutp1">
-              Uniffy is a dynamic mentorship platform built to bridge the gap
-              between Kenyan university students and high school learners
-              seeking career guidance.
-            </p>
+    </div>
+    <div class="first-section">
+      <h1>
+        Guided by those who’ve walked the path <br /><span>Uniffy</span>
+        connects you to your future.
+      </h1>
+      <div id="img-container"></div>
+    </div>
+    <div class="second-section">
+      <div class="img-section">
+        <div id="security">
+          <div class="security-img">
+            <img
+              id="security-icon1"
+              src="static/img/startup.png"
+              alt="Security Icon"
+            />
           </div>
-          <p class="aboutp2">
-            We believe that the journey to a fulfilling career begins with the
-            right mentorship — from people who've walked the path before.
-          </p>
-          <p class="aboutp3">
-            At Uniffy, we connect high school students with passionate
-            university mentors who provide real-world insights into various
-            careers, help students explore their interests, and guide them in
-            choosing suitable universities and courses. Whether you're a student
-            confused about career options or simply looking for someone to walk
-            with you on your academic journey, Uniffy makes that connection
-            possible.
-          </p>
-          <p class="aboutp4">
-            Our goal is to empower the next generation with the knowledge,
-            clarity, and confidence they need to shape their future — one guided
-            step at a time.
-          </p>
+          <div class="text-2">
+            <h2>Our Misson.</h2>
+            <p>Simple and easy career guidance.</p>
+          </div>
+        </div>
+        <div id="security">
+          <div class="security-img">
+            <img
+              id="security-icon1"
+              src="static/img/target.png"
+              alt="Security Icon"
+            />
+          </div>
+          <div class="text-2">
+            <h2>Our Goal</h2>
+            <p>Career guidance for all students.</p>
+          </div>
+        </div>
+        <div id="security">
+          <div class="security-img">
+            <img
+              id="security-icon1"
+              src="static/img/laugh.png"
+              alt="Security Icon"
+            />
+          </div>
+          <div class="text-2">
+            <h2>Fun, Intuitive</h2>
+            <p>Easy to use.</p>
+          </div>
         </div>
       </div>
-      <footer class="footer">
-        <h1 class="footertxt">Uniffy @copyright 2025</h1>
-      </footer>
-    </section>
+    </div>
+    </div>
+    <div class="fourth-section">
+      <div id="text-section">
+        <p class="p3">
+          Uniffy connects high school students with university mentors who offer real-world guidance on careers,
+          courses, and university life—helping students make informed decisions about their future
+        </p>
+
+        <button id="sign-up" onclick="window.location.href='/register';">Sign Up</button>
+      </div>
+      <div id="img-section">
+        <img
+        id="mentorship-gif"
+        src="static/img/mentorship.gif"
+        alt="Mentorship Icon"
+      />
+      </div>
+    </div>
+    <div id="custom-footer"></div>
   </body>
 </html>
