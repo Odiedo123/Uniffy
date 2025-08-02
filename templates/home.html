@@ -5,97 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uniffy - Student Home</title>
     <link rel="stylesheet" href="/static/css/home.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" href="static/img/uniffy-icon.svg" type="image/svg+xml" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Itim&family=Kapakana:wght@300..400&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400..700;1,400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+HR+Lijeva:wght@100..400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="static/img/uniffy-icon.svg" type="image/svg+xml" />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <nav class="navbar">
-      <img
-        id="Uniffy-icon"
-        src="static/img/logo.png"
-        alt="uniffy-icon"
-        onclick="window.location.href='/';"
-      />
-      <div class="navbar-user">
-        <div class="profile-button">
-          <img src="static/img/Male.png" alt="Profile" class="profile-image" />
-        </div>
-      </div>
-    </nav>
-
-    <div class="dashboard-container">
-      <aside class="sidebar">
-        <ul class="sidebar-menu">
-          <li class="sidebar-item active">
-            <div class="homebutton" onclick="window.location.href='/home';">
-              <img src="static/img/home.svg" alt="Profile" class="nav-svg" />
-              <h3>Home</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="mentorsbutton"
-              onclick="window.location.href='/mentors';"
-            >
-              <img src="static/img/mentors.svg" alt="Profile" class="nav-svg" />
-              <h3>My mentors</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="coursesbutton"
-              onclick="window.location.href='/courses';"
-            >
-              <img src="static/img/courses.svg" alt="Profile" class="nav-svg" />
-              <h3>My courses</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="messagebutton"
-              onclick="window.location.href='/messages';"
-            >
-              <img src="static/img/message.svg" alt="Profile" class="nav-svg" />
-              <h3>Messages</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="explorebutton"
-              onclick="window.location.href='/explore';"
-            >
-              <img src="static/img/explore.svg" alt="Profile" class="nav-svg" />
-              <h3>Explore</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div class="logout" onclick="window.location.href='/logout';">
-              <h3>Log out ➜]</h3>
-            </div>
-          </li>
-        </ul>
-      </aside>
-
-      <main class="main-content">
-        <h2 class="section-title">Welcome {{name}}!</h2>
-        <p class="section-description">
-          Welcome to Uniffy. Start exploring your mentorship journey.
-        </p>
-
-        <div class="card-container">
-          <div class="card" onclick="window.location.href='/explore';">
-            Explore mentors
-          </div>
-          <div class="card" onclick="window.location.href='/courses';">
-            Your Courses
-          </div>
-          <div class="card" onclick="window.location.href='/messages';">
-            Messages
-          </div>
-        </div>
-      </main>
-    </div>
+    <div class="navigation-panel"></div>
+    <div class="main-body"></div>
   </body>
 </html>

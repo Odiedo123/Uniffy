@@ -48,9 +48,9 @@ body {
 }
 
 #navigation-button:hover {
-  border: 1px solid rgb(255, 0, 255);
-  box-shadow: -1px 1px 149px -36px rgba(255, 0, 255, 0.75);
-  color: rgba(255, 0, 255, 0.75);
+  border: 1px solid #f15a24;
+  box-shadow: -1px 1px 149px -36px #f15a24;
+  color: #f15a24;
 }
 
 #Uniffy-icon {
@@ -200,4 +200,40 @@ select {
   to {
     opacity: 1;
   }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgb(44, 183, 230);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 999px; /* makes it pill-shaped */
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #f15a24;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  transition: transform 0.3s ease;
+}
+
+.btn:hover svg {
+  transform: translateX(4px);
 }

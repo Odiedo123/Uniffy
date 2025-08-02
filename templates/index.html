@@ -11,6 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Itim&family=Kapakana:wght@300..400&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lora:ital,wght@0,400..700;1,400..700&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+HR+Lijeva:wght@100..400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="icon" href="static/img/uniffy-icon.svg" type="image/svg+xml" />
 
     <link
@@ -94,13 +95,16 @@
         <h2>Connecting High Schoolers to University Mentors</h2>
         <p class="text">
           Uniffy connects high school students with university mentors who offer
-          real-world guidance on careers, courses, and university life—helping
-          students make informed decisions about their future
+          real world guidance on careers, courses and university life, helping
+          students make informed decisions about their future.
         </p>
 
-        <button id="sign-up" onclick="window.location.href='/register';">
-          Sign Up
-        </button>
+        <a class="btn" onclick="window.location.href='/register';">
+          Get In Touch
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
       <div id="img-section">
         <img
@@ -114,23 +118,34 @@
     <div class="third-section">
       <div id="img-section">
         <img
-          id="mentorship-gif"
-          src="static/img/mentorship.gif"
+          id="world-gif"
+          src="static/img/world.gif"
           alt="Mentorship Icon"
         />
       </div>
       <div id="text-section">
-        <h2>Connecting High Schoolers to University Mentors</h2>
+        <h2>Mentors from all over the world</h2>
         <p class="text">
-          Uniffy connects high school students with university mentors who offer
-          real-world guidance on careers, courses, and university life—helping
-          students make informed decisions about their future
+          Learn from a diverse network of university mentors across different countries and fields. 
+          Our global community brings unique insights, cultural perspectives, and real-world 
+          experiences to guide you in shaping your future path!
         </p>
 
-        <button id="sign-up" onclick="window.location.href='/register';">
-          Sign Up
-        </button>
+        <a class="btn" onclick="window.location.href='/register';">
+          Get In Touch
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
+    </div>
+    <div class="fourth-section">
+      <div id="statistics">
+        <div><span id="stat">10,000+</span> Students Guided </div>
+        <div><span id=stat>500+</span> Verified Mentors</div>
+        <div><span id="stat">95%</span> Satisfaction Rate</div>
+      </div>
+      <div id="demo-pictures"></div>
     </div>
 
     <div class="last-section">
@@ -177,6 +192,59 @@
         </div>
       </div>
     </div>
-    <div id="custom-footer"></div>
+    <div class="custom-footer">
+      <div class="footer-left">
+        <img
+        id="Uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+        class="footer-logo"
+      />
+        <div id="socials">
+          <div>
+            <img
+              src="static/img/tiktok.svg"
+              alt="Tiktok Logo"
+              onclick="window.location.href='/login';"
+            />
+          </div>
+          <div>
+            <img
+              src="static/img/x.svg"
+              alt="X Logo"
+              onclick="window.location.href= 'https://x.com/MelofyMusic'"
+            />
+          </div>
+          <div>
+            <img
+              src="static/img/youtube.svg"
+              alt="Youtube Logo"
+              onclick="window.location.href= 'https://x.com/MelofyMusic'"
+            />
+          </div>
+          <div>
+            <img
+              src="static/img/instagram.svg"
+              alt="Instagram Logo"
+              onclick="window.location.href='/login';"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-right">
+        <h3>Sign up for our Newsletter</h3>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Enter your email" required />
+          <button type="submit" class="sign-up" id="news-button">
+            Subscribe
+          </button>
+        </form>
+        <h3 id="email">uniffy.app@gmail.com</h3>
+      </div>
+    </div>
   </body>
 </html>
