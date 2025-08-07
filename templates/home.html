@@ -24,7 +24,110 @@
     />
   </head>
   <body>
-    <div class="navigation-panel"></div>
-    <div class="main-body"></div>
+    <div class="navigation-panel">
+      <img
+        id="Uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+      />
+      <div id="home" onclick="window.location.href='/home';">
+        <img id="home-icon" src="static/img/home.png" alt="home-icon" />
+        <h2>Home</h2>
+      </div>
+      <div id="mentors" onclick="window.location.href='/mentors';">
+        <img id="mentors-icon" src="static/img/person.png" alt="mentors-icon" />
+        <h2>Mentors</h2>
+      </div>
+      <div id="courses" onclick="window.location.href='/courses';">
+        <img
+          id="courses-icon"
+          src="static/img/courses.png"
+          alt="courses-icon"
+        />
+        <h2>Courses</h2>
+      </div>
+      <div id="messages" onclick="window.location.href='/messages';">
+        <img
+          id="messages-icon"
+          src="static/img/messages.png"
+          alt="messages-icon"
+        />
+        <h2>Messages</h2>
+      </div>
+      <div id="overview" onclick="window.location.href='/overview';">
+        <img
+          id="overview-icon"
+          src="static/img/overview.png"
+          alt="overview-icon"
+        />
+        <h2>Overview</h2>
+      </div>
+      <div id="log-out" onclick="window.location.href='/logout';">
+        <h2>➜]</h2>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="search-container">
+        <div class="search-field">
+          <div class="search-icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </div>
+          <input
+            type="text"
+            placeholder="Search mentors near you..."
+            class="search-input"
+          />
+        </div>
+      </div>
+      <h1>Welcome {{name}}!</h1>
+      <div class="container">
+        <div class="course-card">
+          <img src="static/img/coding.jpg" class="course-img" alt="Coding" />
+          <h2 class="course-title">Web Development</h2>
+          <p class="course-desc">
+            HTML, CSS, JavaScript - Frontend Foundations
+          </p>
+          <progress value="70" max="100"></progress>
+          <button class="course-btn">Continue</button>
+        </div>
+        <div class="course-card">
+          <img
+            src="https://img.icons8.com/color/96/000000/artificial-intelligence.png"
+            class="course-img"
+            alt="AI"
+          />
+          <h2 class="course-title">Intro to AI</h2>
+          <p class="course-desc">
+            Understanding the basics of machine learning
+          </p>
+          <progress value="40" max="100"></progress>
+          <button class="course-btn">Continue</button>
+        </div>
+        <div class="course-card">
+          <img
+            src="https://img.icons8.com/color/96/000000/physics.png"
+            class="course-img"
+            alt="Physics"
+          />
+          <h2 class="course-title">Physics for Engineers</h2>
+          <p class="course-desc">Mechanics, Thermodynamics, and more</p>
+          <progress value="90" max="100"></progress>
+          <button class="course-btn">Continue</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

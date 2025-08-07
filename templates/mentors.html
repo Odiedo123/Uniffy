@@ -11,95 +11,128 @@
     />
   </head>
   <body>
-    <nav class="navbar">
+    <div class="navigation-panel">
       <img
         id="Uniffy-icon"
         src="static/img/logo.png"
         alt="uniffy-icon"
         onclick="window.location.href='/';"
       />
-      <div class="navbar-user">
-        <div class="profile-button">
-          <img src="static/img/Male.png" alt="Profile" class="profile-image" />
+      <div id="home" onclick="window.location.href='/home';">
+        <img id="home-icon" src="static/img/home.png" alt="home-icon" />
+        <h2>Home</h2>
+      </div>
+      <div id="mentors" onclick="window.location.href='/mentors';">
+        <img id="mentors-icon" src="static/img/person.png" alt="mentors-icon" />
+        <h2>Mentors</h2>
+      </div>
+      <div id="courses" onclick="window.location.href='/courses';">
+        <img
+          id="courses-icon"
+          src="static/img/courses.png"
+          alt="courses-icon"
+        />
+        <h2>Courses</h2>
+      </div>
+      <div id="messages" onclick="window.location.href='/messages';">
+        <img
+          id="messages-icon"
+          src="static/img/messages.png"
+          alt="messages-icon"
+        />
+        <h2>Messages</h2>
+      </div>
+      <div id="overview" onclick="window.location.href='/overview';">
+        <img
+          id="overview-icon"
+          src="static/img/overview.png"
+          alt="overview-icon"
+        />
+        <h2>Overview</h2>
+      </div>
+      <div id="log-out" onclick="window.location.href='/logout';">
+        <h2>➜]</h2>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="search-container">
+        <div class="search-field">
+          <div class="search-icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </div>
+          <input
+            type="text"
+            placeholder="Search mentors near you..."
+            class="search-input"
+          />
         </div>
       </div>
-    </nav>
 
-    <div class="dashboard-container">
-      <aside class="sidebar">
-        <ul class="sidebar-menu">
-          <li class="sidebar-item active">
-            <div class="homebutton" onclick="window.location.href='/home';">
-              <img src="static/img/home.svg" alt="Profile" class="nav-svg" />
-              <h3>Home</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="mentorsbutton"
-              onclick="window.location.href='/mentors';"
-            >
-            <img src="static/img/mentors.svg" alt="Profile" class="nav-svg" />
-              <h3>My mentors</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="coursesbutton"
-              onclick="window.location.href='/courses';"
-            >
-            <img src="static/img/courses.svg" alt="Profile" class="nav-svg" />
-              <h3>My courses</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="messagebutton"
-              onclick="window.location.href='/messages';"
-            >
-            <img src="static/img/message.svg" alt="Profile" class="nav-svg" />
-              <h3>Messages</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div
-              class="explorebutton"
-              onclick="window.location.href='/explore';"
-            >
-            <img src="static/img/explore.svg" alt="Profile" class="nav-svg" />
-              <h3>Explore</h3>
-            </div>
-          </li>
-          <li class="sidebar-item">
-            <div class="logout" onclick="window.location.href='/logout';">
-              <h3>Log out ➜]</h3>
-            </div>
-          </li>
-        </ul>
-      </aside>
-
-    <div class="courses-section">
       <main class="mentors-section">
         <h2 class="section-title">Your Mentors</h2>
         <div class="mentor-grid">
           <!-- MENTOR CARD -->
           <div class="mentor-card">
-            <div class="img-container"><img src="static/img/blackgirl.png" alt="Mentor 1" class="mentor-img" /></div>
-            
+            <div class="img-container">
+              <img
+                src="static/img/blackgirl.png"
+                alt="Mentor 1"
+                class="mentor-img"
+              />
+            </div>
+
             <h3 class="mentor-name">Angela Mwangi</h3>
             <p class="mentor-career">Software Engineering @ Strathmore</p>
             <button class="mentor-btn">Message</button>
           </div>
 
           <div class="mentor-card">
-            <div class="img-container"><img src="static/img/blackguy.png" alt="Mentor 1" class="mentor-img" /></div>
+            <div class="img-container">
+              <img
+                src="static/img/blackgirl.png"
+                alt="Mentor 1"
+                class="mentor-img"
+              />
+            </div>
+
+            <h3 class="mentor-name">Angela Mwangi</h3>
+            <p class="mentor-career">Software Engineering @ Strathmore</p>
+            <button class="mentor-btn">Message</button>
+          </div>
+
+          <div class="mentor-card">
+            <div class="img-container">
+              <img
+                src="static/img/blackguy.png"
+                alt="Mentor 1"
+                class="mentor-img"
+              />
+            </div>
             <h3 class="mentor-name">Carlos Otieno</h3>
             <p class="mentor-career">Architecture @ JKUAT</p>
             <button class="mentor-btn">Message</button>
           </div>
 
           <div class="mentor-card">
-            <div class="img-container"><img src="static/img/blackmuslim.jpeg" alt="Mentor 1" class="mentor-img" /></div>
+            <div class="img-container">
+              <img
+                src="static/img/blackmuslim.jpeg"
+                alt="Mentor 1"
+                class="mentor-img"
+              />
+            </div>
             <h3 class="mentor-name">Zahra Yusuf</h3>
             <p class="mentor-career">Medicine @ UON</p>
             <button class="mentor-btn">Message</button>
@@ -107,6 +140,5 @@
         </div>
       </main>
     </div>
-
   </body>
 </html>
