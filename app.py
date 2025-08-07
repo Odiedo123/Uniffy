@@ -9,20 +9,19 @@ import os
 import json
 import bcrypt
 
-load_dotenv() 
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 limiter = Limiter(
-    key_func=lambda: session.get("user_id", get_remote_address()),  #! Use user_id if logged in, else IP
+    key_func=lambda: session.get("user_id", get_remote_address()),
     app=app,
-    default_limits=["100 per minute"]  # !Global limit
+    default_limits=["100 per minute"]
 )
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")  # Use service role key to enable RLS access with policies
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def login_required(f):
@@ -38,12 +37,8 @@ def university_verified_required(f):
     def decorated_function(*args, **kwargs):
         account_type = session.get('account_type')
         is_verified = session.get('is_verified')
-
-        # Allow only verified university users
         if account_type != 'university' or is_verified is not True:
-            # Redirect to previous page or fallback to home
             return redirect(request.referrer or '/')
-        
         return f(*args, **kwargs)
     return decorated_function
 
@@ -52,25 +47,21 @@ def quiz_not_taken_required(f):
     def decorated_function(*args, **kwargs):
         user_id = session.get('user_id')
         account_type = session.get('account_type')
-
-        #! Only students are restricted here
         if not user_id or account_type != 'student':
             return redirect(url_for('login'))
-
-        # !Check if the user already has a quiz result
         result = supabase.table('quiz_results').select('id').eq('user_id', user_id).limit(1).execute()
-
         if result.data:
-            #! Redirect if they already took the quiz
             return redirect(url_for('home_page'))
-
         return f(*args, **kwargs)
     return decorated_function
-
 
 @app.route("/")
 def main_page():
     return render_template('index.html')
+
+@app.route("/policy")
+def policy_page():
+    return render_template('policy.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 @limiter.limit("20 per minute")
@@ -78,37 +69,25 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '')
-
         if not email or not password:
-            error = "Please provide both email and password."
-            return render_template('log-in.html', error=error)
+            return render_template('log-in.html', error="Please provide both email and password.")
 
-        user_data = supabase.table('users').select('*').eq('email', email).execute()
-
+        user_data = supabase.table('users').select('*').eq('email', email).single().execute()
         if not user_data.data:
-            error = "Incorrect Email or Password."
-            return render_template('log-in.html', error=error)
+            return render_template('log-in.html', error="Incorrect Email or Password.")
 
-        user = user_data.data[0]
-
+        user = user_data.data
         if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             session['user_id'] = user['id']
             session['is_verified'] = user.get('is_verified', False)
             session['account_type'] = user.get('account_type', '').strip().lower()
 
             if session['account_type'] == 'university':
-                if session['is_verified']:
-                    return redirect('/home')
-                else:
-                    return redirect('/verify')
+                return redirect('/home') if session['is_verified'] else redirect('/verify')
             elif session['account_type'] == 'student':
                 return redirect('/questions')
-            else:
-                return redirect('/home')  # fallback
-        else:
-            error = "Incorrect Email or Password."
-            return render_template('log-in.html', error=error)
-
+            return redirect('/home')
+        return render_template('log-in.html', error="Incorrect Email or Password.")
     return render_template('log-in.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -118,22 +97,15 @@ def register():
         email = request.form['email']
         password = request.form['password']
         name = request.form['name']
-        account_type = request.form['account_type'].strip().lower()  # 'student' or 'university'
-
-        # Check if email already exists
-        existing_user = supabase.table('users').select('*').eq('email', email).execute()
+        account_type = request.form['account_type'].strip().lower()
+        existing_user = supabase.table('users').select('id').eq('email', email).execute()
         if existing_user.data:
-            error = "This email is already registered."
-            return render_template('register.html', error=error)
+            return render_template('register.html', error="This email is already registered.")
 
-        # Hash the password using bcrypt
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
-        # Set verification status
         is_verified = None if account_type == 'student' else False
 
-        # Insert the new user
-        result = supabase.table('users').insert({
+        supabase.table('users').insert({
             'email': email,
             'password': hashed_password,
             'name': name,
@@ -141,88 +113,50 @@ def register():
             'is_verified': is_verified
         }).execute()
 
-        # Fetch newly created user from Supabase
-        user_data = supabase.table('users').select('*').eq('email', email).execute()
-        if not user_data.data:
-            error = "Something went wrong. Please try again."
-            return render_template('register.html', error=error)
-
-        user = user_data.data[0]
-
-        # Set session values
+        user_data = supabase.table('users').select('*').eq('email', email).single().execute()
+        user = user_data.data
         session['user_id'] = user['id']
         session['is_verified'] = user.get('is_verified', False)
         session['account_type'] = account_type
 
-        # Redirect based on account type
-        if account_type == 'student':
-            return redirect('/questions')
-        elif account_type == 'university':
-            return redirect('/verify')
-        else:
-            return redirect('/home')
-
+        return redirect('/questions') if account_type == 'student' else redirect('/verify')
     return render_template('register.html')
-
 
 @app.route('/verify')
 @login_required
 def verify_page():
     user_id = session.get('user_id')
-
-    user_data = supabase.table('users').select('name').eq('id', user_id).execute()
-
-    if user_data.data:
-        name = user_data.data[0]['name']
-    else:
-        name = "User"
-
+    user_data = supabase.table('users').select('name').eq('id', user_id).single().execute()
+    name = user_data.data['name'] if user_data.data else "User"
     return render_template('verify.html', name=name)
-
 
 @app.route("/questions", methods=["GET", "POST"])
 @quiz_not_taken_required
 def questions():
     if request.method == "POST":
-        #! Ensure user is logged in and has a session
         user_id = session.get("user_id")
-        if not user_id:
-            return redirect("/login")
-
         data = request.json
-        result = data.get("result")  #! main interest, e.g., 'tech'
-        interest_scores = data.get("scores")  #! full breakdown as dict
-
-        #! Basic validation
+        result = data.get("result")
+        interest_scores = data.get("scores")
         if not result or not isinstance(interest_scores, dict):
             return {"error": "Invalid quiz data"}, 400
 
-        #! Save quiz result to Supabase
         supabase.table("quiz_results").insert({
             "user_id": user_id,
             "main_interest": result,
             "interest_scores": json.dumps(interest_scores),
             "quiz_taken_at": datetime.utcnow().isoformat()
         }).execute()
-
         return {"message": "Quiz result saved successfully"}, 200
-
     return render_template("questions.html")
 
 @app.route('/home')
 @login_required
 def home_page():
     user_id = session.get('user_id')
-
-    user_data = supabase.table('users').select('name').eq('id', user_id).execute()
-
-    if user_data.data:
-        name = user_data.data[0]['name']
-    else:
-        name = "User"
-
+    user_data = supabase.table('users').select('name').eq('id', user_id).single().execute()
+    name = user_data.data['name'] if user_data.data else "User"
     return render_template('home.html', name=name)
-
 
 @app.route("/courses")
 @login_required
@@ -244,12 +178,10 @@ def message_page():
 def mentors_page():
     return render_template('mentors.html')
 
-
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -8,7 +8,8 @@ body {
 }
 
 * {
-  font-family: "Inter", sans-serif;
+  font-family: "Outfit", sans-serif;
+  font-weight: 400;
 }
 
 #navigation-bar {
@@ -49,9 +50,9 @@ body {
 }
 
 #navigation-button:hover {
-  border: 1px solid #f15a24;
-  box-shadow: -1px 1px 149px -36px #f15a24;
-  color: #f15a24;
+  border: 1px solid rgb(44, 183, 230);
+  box-shadow: -1px 1px 149px -36px rgb(44, 183, 230);
+  color: rgb(44, 183, 230);
 }
 
 #Uniffy-icon {
