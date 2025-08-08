@@ -238,10 +238,10 @@ def message_page():
 def mentors_page():
     return render_template('mentors.html')
 
-@app.route("/mentor-home")
+@app.route("/mentor_home")
 @login_required
 def mentor_home_page():
-    return render_template('mentor-home.html')
+    return render_template('mentor_home.html')
 
 @app.route('/logout')
 def logout():
