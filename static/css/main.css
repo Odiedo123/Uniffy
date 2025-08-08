@@ -122,7 +122,7 @@ button {
   background-size: cover;
   background-position: center;
   background-size: 100%;
-  background-image: url(../img/trial2.jpg);
+  background-image: url(../img/main.jpg);
   cursor: pointer;
   transition: 0.7s;
 }
@@ -220,7 +220,7 @@ button {
   background-size: cover;
   background-position: center;
   background-size: 100%;
-  background-image: url(../img/demo.jpg);
+  background-image: url(../img/main.png);
 }
 
 .last-section {

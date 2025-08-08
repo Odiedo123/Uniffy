@@ -5,6 +5,9 @@ from flask_limiter.util import get_remote_address
 from functools import wraps
 from datetime import datetime
 from dotenv import load_dotenv
+from PIL import Image
+import pytesseract
+import tempfile
 import os
 import json
 import bcrypt
@@ -41,6 +44,33 @@ def university_verified_required(f):
             return redirect(request.referrer or '/')
         return f(*args, **kwargs)
     return decorated_function
+
+def university_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+
+        account_type = session.get('account_type')
+        if account_type != 'university':
+            return redirect(request.referrer or url_for('home_page'))
+
+        return f(*args, **kwargs)
+    return decorated_function
+
+def highschool_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+
+        account_type = session.get('account_type')
+        if account_type != 'student':
+            return redirect(request.referrer or url_for('mentor_home_page'))
+
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 def quiz_not_taken_required(f):
     @wraps(f)
@@ -122,16 +152,41 @@ def register():
         return redirect('/questions') if account_type == 'student' else redirect('/verify')
     return render_template('register.html')
 
-@app.route('/verify')
+@app.route('/verify', methods=['GET', 'POST'])
 @login_required
+@university_required
 def verify_page():
     user_id = session.get('user_id')
     user_data = supabase.table('users').select('name').eq('id', user_id).single().execute()
     name = user_data.data['name'] if user_data.data else "User"
+
+    if request.method == 'POST':
+        file = request.files.get('verification_image')
+        if not file:
+            return render_template('verify.html', name=name, error="No file uploaded.")
+
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as temp:
+                file.save(temp.name)
+                text = pytesseract.image_to_string(Image.open(temp.name))
+
+            # Basic verification logic: check if a known keyword appears
+            if any(keyword.lower() in text.lower() for keyword in ["university", "student", "college"]):
+                # Mark user as verified in Supabase
+                supabase.table('users').update({'is_verified': True}).eq('id', user_id).execute()
+                session['is_verified'] = True
+                return redirect('/mentor-home')  # Assuming /upload is the next page after successful verification
+            else:
+                return render_template('verify.html', name=name, error="Verification failed. Try a clearer image.")
+
+        except Exception as e:
+            return render_template('verify.html', name=name, error=f"Error during verification: {str(e)}")
+
     return render_template('verify.html', name=name)
 
 @app.route("/questions", methods=["GET", "POST"])
 @quiz_not_taken_required
+@highschool_required
 def questions():
     if request.method == "POST":
         user_id = session.get("user_id")
@@ -152,6 +207,7 @@ def questions():
 
 @app.route('/home')
 @login_required
+@highschool_required
 def home_page():
     user_id = session.get('user_id')
     user_data = supabase.table('users').select('name').eq('id', user_id).single().execute()
@@ -160,23 +216,32 @@ def home_page():
 
 @app.route("/courses")
 @login_required
+@highschool_required
 def course_page():
     return render_template('courses.html')
 
 @app.route("/explore")
 @login_required
+@highschool_required
 def explore_page():
     return render_template('explore.html')
 
 @app.route("/messages")
 @login_required
+@highschool_required
 def message_page():
     return render_template('messages.html')
 
 @app.route("/mentors")
 @login_required
+@highschool_required
 def mentors_page():
     return render_template('mentors.html')
+
+@app.route("/mentor-home")
+@login_required
+def mentor_home_page():
+    return render_template('mentor-home.html')
 
 @app.route('/logout')
 def logout():

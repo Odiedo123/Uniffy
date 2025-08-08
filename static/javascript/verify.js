@@ -13,3 +13,26 @@ fileInput.addEventListener("change", function () {
     reader.readAsDataURL(file);
   }
 });
+
+function updateFileName(input) {
+  const fileName = input.files[0]?.name || "";
+  document.getElementById("fileName").textContent = fileName;
+}
+
+function setProfileImage(input) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const profilePic = document.getElementById("profile-pic");
+      profilePic.style.backgroundImage = `url('${e.target.result}')`;
+      profilePic.classList.add("filled");
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function updateFileName(input) {
+  const fileName = input.files[0]?.name || "";
+  document.getElementById("fileName").textContent = fileName;
+}
