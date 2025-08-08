@@ -66,7 +66,7 @@ def highschool_required(f):
 
         account_type = session.get('account_type')
         if account_type != 'student':
-            return redirect(request.referrer or url_for('mentor_home_page'))
+            return redirect(url_for('mentor_home_page'))
 
         return f(*args, **kwargs)
     return decorated_function
