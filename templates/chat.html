@@ -1,0 +1,52 @@
+<!-- templates/chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tenacity Chat</title>
+    <link rel="stylesheet" href="/static/css/chat.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="brand">tenacity</div>
+      <div class="right-controls">
+        <a href="/logout">Log out</a>
+      </div>
+    </div>
+
+    <main class="chat-wrapper">
+      <aside class="left-col">
+        <div class="search">
+          <input id="user-search" placeholder="Search people..." />
+        </div>
+        <div id="users-list" class="users-list">
+          <!-- user items -->
+        </div>
+      </aside>
+
+      <section class="right-col">
+        <div class="chat-header" id="chat-header">
+          <div id="chat-with">Select a user to start</div>
+        </div>
+
+        <div id="chat-window" class="chat-window">
+          <!-- messages -->
+        </div>
+
+        <div class="composer">
+          <input id="message-input" placeholder="Message..." maxlength="1000" />
+          <button id="send-btn">Send</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.SUPABASE_URL = "{{ supabase_url }}";
+      window.SUPABASE_ANON_KEY = "{{ supabase_anon_key }}";
+      window.MY_USER_ID = "{{ my_user_id }}";
+    </script>
+    <script src="/static/javascript/chat.js"></script>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+* {
+  font-family: "Outfit", sans-serif;
+  font-weight: 400;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.navbar {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  background: rgba(0, 62, 168, 0.4); /* Deep blue tint */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  padding-right: 20px;
+  height: 85px;
+  width: 100vw;
+}
+
+#uniffy-icon {
+  width: 150px;
+  height: auto;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.button-container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 45px;
+  border-radius: 10px;
+  background: rgba(94, 94, 94, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button-container div h2 {
+  color: white;
+  font-size: 19px;
+}
+
+#log-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(207, 0, 0);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 0px;
+  margin-right: 40px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100vw;
+  height: 90vh;
+  margin-top: 150px;
+}

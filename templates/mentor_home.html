@@ -3,11 +3,86 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/static/css/main.css" />
+    <link rel="stylesheet" href="/static/css/mentor_home.css" />
     <link rel="icon" href="static/img/uniffy-icon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <title>Uniffy - Mentor Home</title>
   </head>
   <body>
-    <h1>Hello Mentor!</h1>
+    <div class="aurora-container">
+      <div class="aurora-background">
+        <div class="aurora-effect"></div>
+      </div>
+    </div>
+    <div class="navbar">
+      <img
+        id="uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+      />
+      <div class="button-container">
+        <div onclick="window.location.href='/mentees';">
+          <h2>My Mentees</h2>
+        </div>
+        <div onclick="window.location.href='/mentor_messages';">
+          <h2>Messages</h2>
+        </div>
+        <div onclick="window.location.href='/mentor_analytics';">
+          <h2>Analytics</h2>
+        </div>
+      </div>
+      <div id="log-out" onclick="window.location.href='/logout';">
+        <h2>➜]</h2>
+      </div>
+    </div>
+    <div class="main-content">
+      <h2>Welcome {{name}}!</h2>
+      <div id="container">
+        <div class="section">
+          <div id="img-div">
+            <img
+              id="message-icon"
+              src="static/img/messages.png"
+              alt="message-icon"
+            />
+          </div>
+          <h2>10+</h2>
+          <h3>New messages</h3>
+        </div>
+        <div class="section">
+          <div id="img-div">
+            <img id="time-icon" src="static/img/clock.png" alt="clock-icon" />
+          </div>
+          <h2>35hrs</h2>
+          <h3>Mentoring Time</h3>
+        </div>
+        <div class="section">
+          <div id="img-div">
+            <img id="money-icon" src="static/img/money.png" alt="money-icon" />
+          </div>
+          <h2>$4000</h2>
+          <h3>Monthly Gain</h3>
+        </div>
+      </div>
+      <button>Check out the analytics</button>
+    </div>
   </body>
 </html>

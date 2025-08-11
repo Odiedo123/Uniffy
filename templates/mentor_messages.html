@@ -1,0 +1,86 @@
+<!-- templates/mentor_messages.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Uniffy - My Messages</title>
+    <link rel="stylesheet" href="/static/css/mentor_messages.css" />
+    <link rel="icon" href="static/img/uniffy-icon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+      window.MY_USER_ID = "{{ my_user_id }}";
+      window.SUPABASE_URL = "{{ supabase_url }}";
+      window.SUPABASE_ANON_KEY = "{{ supabase_anon_key }}";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.4/dist/umd/supabase.min.js"></script>
+  </head>
+  <body>
+    <div class="navbar">
+      <img
+        id="uniffy-icon"
+        src="static/img/logo.png"
+        alt="uniffy-icon"
+        onclick="window.location.href='/';"
+      />
+      <div class="button-container">
+        <div onclick="window.location.href='/mentees';">
+          <h2>My Mentees</h2>
+        </div>
+        <div onclick="window.location.href='/mentor_messages';">
+          <h2>Messages</h2>
+        </div>
+        <div onclick="window.location.href='/mentor_analytics';">
+          <h2>Analytics</h2>
+        </div>
+      </div>
+      <div id="log-out" onclick="window.location.href='/logout';">
+        <h2>➜]</h2>
+      </div>
+    </div>
+
+    <main class="container">
+      <aside class="left">
+        <h3>Requests / Mentees</h3>
+        <div id="requests" class="card">Loading…</div>
+      </aside>
+
+      <section class="chat">
+        <div class="chat-header" id="chat-header">Select a mentee</div>
+        <div id="chat-window" class="chat-window"></div>
+        <div class="composer">
+          <input
+            id="message-input"
+            placeholder="Message selected mentee…"
+            maxlength="1000"
+          />
+          <button id="send-btn">Send</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.SUPABASE_URL = "{{ supabase_url }}";
+      window.SUPABASE_ANON_KEY = "{{ supabase_anon_key }}";
+      window.MY_USER_ID = "{{ my_user_id }}";
+    </script>
+    <script src="/static/javascript/mentor_messages.js"></script>
+  </body>
+</html>

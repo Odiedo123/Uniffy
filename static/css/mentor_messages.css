@@ -1,0 +1,210 @@
+/* static/mentor_messages.css */
+:root {
+  --bg: #fafafa;
+  --panel: #fff;
+  --accent: #405de6;
+  --muted: #8e8e8e;
+  --me: #dcf8c6;
+}
+
+* {
+  font-family: "Outfit", sans-serif;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+  background: var(--bg);
+}
+
+.navbar {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  top: 0;
+  left: 0;
+  background: rgba(0, 62, 168, 0.4); /* Deep blue tint */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+  padding-right: 20px;
+  height: 85px;
+  width: 100vw;
+}
+
+#uniffy-icon {
+  width: 150px;
+  height: auto;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.button-container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 45px;
+  border-radius: 10px;
+  background: rgba(94, 94, 94, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button-container div h2 {
+  color: white;
+  font-size: 19px;
+}
+
+#log-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(207, 0, 0);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 0px;
+  margin-right: 40px;
+}
+
+.container {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+  height: calc(100vh - 62px);
+}
+
+.left {
+  padding-top: 60px;
+  width: 320px;
+}
+
+.card {
+  background: var(--panel);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #f0f0f0;
+}
+
+.request-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.request-item:hover {
+  background: #f6f7ff;
+}
+
+.request-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-top: 80px;
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.chat-window {
+  flex: 1;
+  padding: 18px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: linear-gradient(#fff, #fafafa);
+}
+
+.composer {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.composer input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.composer button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #405de6, #833ab4);
+  color: #fff;
+  cursor: pointer;
+}
+
+.msg {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  max-width: 70%;
+}
+
+.msg .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.msg .bubble {
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+}
+
+.msg.me {
+  margin-left: auto;
+  flex-direction: row-reverse;
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}

@@ -40,10 +40,11 @@ button {
   text-align: center;
   top: 0;
   left: 0;
-  opacity: 0.999;
-  background-color: rgba(0, 31, 63, 0.938);
-  backdrop-filter: blur(100px);
-  -webkit-backdrop-filter: blur(100px);
+  background: rgba(0, 62, 168, 0.4); /* Deep blue tint */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
   height: 85px;
   width: 100vw;
   z-index: 999;
