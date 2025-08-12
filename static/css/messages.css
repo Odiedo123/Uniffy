@@ -103,6 +103,12 @@ body {
   cursor: pointer;
 }
 
+.mentor-card {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
 /* message bubble */
 .msg {
   display: flex;

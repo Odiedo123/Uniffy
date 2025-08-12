@@ -63,6 +63,14 @@ logging.getLogger("engineio").setLevel(logging.WARNING)
 logging.getLogger("socketio").setLevel(logging.WARNING)
 
 
+
+@app.after_request
+def no_cache(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 # --- Helpers & decorators ---
 def login_required(f):
     @wraps(f)
@@ -534,28 +542,47 @@ def mentor_messages_page():
         my_user_id=session.get("user_id"),
     )
 
-
 @app.route("/api/my_mentor")
 @login_required
 @highschool_required
 def api_my_mentor():
     student_id = session.get("user_id")
-    res = supabase.table("mentor_student_links").select("mentor_id, approved").eq("student_id", student_id).limit(1).execute()
+    
+    # Get all mentor links for the student
+    res = (
+        supabase.table("mentor_student_links")
+        .select("mentor_id, approved")
+        .eq("student_id", student_id)
+        .execute()
+    )
 
     if not res.data or len(res.data) == 0:
-        return jsonify({"data": None}), 200
+        return jsonify({"data": []}), 200
 
-    rec = res.data[0]
-    mentor_id = rec.get("mentor_id")
-    approved = rec.get("approved", False)
+    mentors_data = []
 
-    if not mentor_id:
-        return jsonify({"data": None}), 200
+    for rec in res.data:
+        mentor_id = rec.get("mentor_id")
+        approved = rec.get("approved", False)
 
-    mentor_res = supabase.table("users").select("id, name, email, account_type").eq("id", mentor_id).single().execute()
+        if not mentor_id:
+            continue
 
-    return jsonify({"data": {"mentor": mentor_res.data, "approved": approved}}), 200
+        mentor_res = (
+            supabase.table("users")
+            .select("id, name, email, account_type")
+            .eq("id", mentor_id)
+            .single()
+            .execute()
+        )
 
+        if mentor_res.data:
+            mentors_data.append({
+                "mentor": mentor_res.data,
+                "approved": approved
+            })
+
+    return jsonify({"data": mentors_data}), 200
 
 @app.route("/api/my_requests")
 @login_required
@@ -746,6 +773,60 @@ def api_me():
         if isinstance(r, dict) and r.get("error"):
             return jsonify({"error": r["error"]["message"]}), 500
         return jsonify({"data": r.data if hasattr(r, "data") else None})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+@app.route("/api/university_verified_users")
+@login_required
+@highschool_required
+def api_university_verified_users():
+    try:
+        res = (
+            supabase.table("users")
+            .select("*")  # Only existing columns
+            .eq("account_type", "university")  # Only university mentors
+            .eq("is_verified", True)              # Only verified users
+            .execute()
+        )
+
+        return jsonify({"data": res.data if hasattr(res, "data") else []})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/request_mentor", methods=["POST"])
+@login_required
+@highschool_required
+def api_request_mentor():
+    try:
+        payload = request.get_json() or {}
+        mentor_id = payload.get("mentor_id")
+        student_id = session.get("user_id")
+
+        if not mentor_id:
+            return jsonify({"error": "Missing mentor_id"}), 400
+
+        # Check if link already exists
+        existing_link = supabase.table("mentor_student_links") \
+            .select("*") \
+            .eq("mentor_id", mentor_id) \
+            .eq("student_id", student_id) \
+            .execute()
+
+        if existing_link.data:
+            # Update existing record
+            supabase.table("mentor_student_links") \
+                .update({"approved": True}) \
+                .eq("mentor_id", mentor_id) \
+                .eq("student_id", student_id) \
+                .execute()
+        else:
+            # Insert new record
+            supabase.table("mentor_student_links").insert({
+                "mentor_id": mentor_id,
+                "student_id": student_id,
+                "approved": True
+            }).execute()
+
+        return jsonify({"ok": True})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

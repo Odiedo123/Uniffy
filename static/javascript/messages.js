@@ -1,7 +1,5 @@
 // static/messages.js
 document.addEventListener("DOMContentLoaded", async () => {
-  const SUPABASE_URL = window.SUPABASE_URL;
-  const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY;
   const MY_USER_ID = window.MY_USER_ID;
 
   if (!MY_USER_ID) {
@@ -15,33 +13,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   const sendBtn = document.getElementById("send-btn");
   const chatHeader = document.getElementById("chat-header");
 
-  let mentor = null;
+  let mentors = [];
+  let selectedMentor = null;
   let messages = [];
-  let lastShownTimeByUser = {}; // Tracks last shown time per sender
-
-  function getMessageKey(m) {
-    return `${m.sender_id}_${Math.floor(
-      new Date(m.created_at).getTime() / 1000
-    )}`;
-  }
+  let lastShownTimeByUser = {};
+  let selectedCardElement = null;
 
   const socket = io({ query: { user_id: MY_USER_ID } });
+
+  function showToast(msg, type = "error") {
+    const toast = document.createElement("div");
+    toast.textContent = msg;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.right = "20px";
+    toast.style.padding = "10px 15px";
+    toast.style.borderRadius = "6px";
+    toast.style.backgroundColor =
+      type === "error" ? "#ff4d4f" : type === "success" ? "#52c41a" : "#1890ff";
+    toast.style.color = "#fff";
+    toast.style.fontSize = "14px";
+    toast.style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)";
+    toast.style.zIndex = "9999";
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.transition = "opacity 0.3s";
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 300);
+    }, 2000);
+  }
 
   socket.on("connect", () => {
     console.log("socket connected", socket.id);
   });
 
   socket.on("new_message", (m) => {
-    if (!mentor) return;
-
+    if (!selectedMentor) return;
     if (
-      (m.sender_id === MY_USER_ID && m.receiver_id === mentor.id) ||
-      (m.sender_id === mentor.id && m.receiver_id === MY_USER_ID)
+      (m.sender_id === MY_USER_ID && m.receiver_id === selectedMentor.id) ||
+      (m.sender_id === selectedMentor.id && m.receiver_id === MY_USER_ID)
     ) {
       const now = new Date(m.created_at).getTime();
       const lastShown = lastShownTimeByUser[m.sender_id] || 0;
-
-      // Only allow one message every 4 seconds per sender
       if (now - lastShown >= 4000) {
         lastShownTimeByUser[m.sender_id] = now;
         messages.push(m);
@@ -52,71 +66,104 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   socket.on("typing_update", (p) => {
-    if (mentor && p.from_id === mentor.id && p.to_id === MY_USER_ID) {
+    if (
+      selectedMentor &&
+      p.from_id === selectedMentor.id &&
+      p.to_id === MY_USER_ID
+    ) {
       showTyping(p.is_typing);
     }
   });
 
   socket.on("messages_seen", (p) => {
-    if (mentor && p.by === mentor.id) {
+    if (selectedMentor && p.by === selectedMentor.id) {
       const el = document.getElementById("typing-indicator");
       if (el) el.remove();
     }
   });
 
-  async function loadMentor() {
+  async function loadMentors() {
     const res = await fetch("/api/my_mentor");
     const json = await res.json();
     if (json.error) {
-      mentorArea.innerText = "Error loading mentor";
+      mentorArea.innerText = "Error loading mentors";
       return;
     }
-    if (!json.data) {
+    mentors = json.data || [];
+    if (mentors.length === 0) {
       mentorArea.innerHTML =
-        '<div class="card small">No mentor assigned yet.</div>';
+        '<div class="card small">No mentors assigned yet.</div>';
       chatHeader.innerText = "No mentor";
       return;
     }
-    mentor = json.data.mentor;
-    const approved = json.data.approved;
-    mentorArea.innerHTML = `
-      <img src="${
-        mentor.avatar_url ||
-        "https://ui-avatars.com/api/?name=" +
-          encodeURIComponent(mentor.name || mentor.email)
-      }" style="width:64px;height:64px;border-radius:50%;object-fit:cover;float:left;margin-right:10px" />
-      <div style="padding-top:8px">
-        <div style="font-weight:600">${escape(
-          mentor.name || mentor.email
-        )}</div>
-        <div class="small">${approved ? "Approved" : "Pending approval"}</div>
-      </div>
-      <div style="clear:both"></div>
-    `;
+    mentorArea.innerHTML = "";
+    mentors.forEach(({ mentor, approved }) => {
+      const mentorCard = document.createElement("div");
+      mentorCard.className = "mentor-card";
+      mentorCard.style.cursor = approved ? "pointer" : "not-allowed";
+      mentorCard.style.padding = "8px";
+      mentorCard.style.border = "1px solid #ccc";
+      mentorCard.style.borderRadius = "8px";
+      mentorCard.style.marginBottom = "5px";
+      mentorCard.style.display = "flex";
+      mentorCard.style.alignItems = "center";
+      mentorCard.style.gap = "10px";
+      mentorCard.innerHTML = `
+        <img src="${
+          mentor.avatar_url ||
+          "https://ui-avatars.com/api/?name=" +
+            encodeURIComponent(mentor.name || mentor.email)
+        }" style="width:48px;height:48px;border-radius:50%;object-fit:cover" />
+        <div>
+          <div style="font-weight:600">${escape(
+            mentor.name || mentor.email
+          )}</div>
+          <div class="small">${approved ? "Approved" : "Pending approval"}</div>
+        </div>
+      `;
+      mentorCard.addEventListener("click", () => {
+        if (approved) {
+          selectMentor(mentor, mentorCard, approved);
+        } else {
+          showToast("This mentor has not approved the connection yet.");
+        }
+      });
+      mentorArea.appendChild(mentorCard);
+    });
+  }
+
+  async function selectMentor(mentor, cardElement, approved) {
+    selectedMentor = {
+      id: mentor.id,
+      name: mentor.name,
+      email: mentor.email,
+      avatar_url: mentor.avatar_url,
+      approved: approved,
+    };
     chatHeader.innerText = mentor.name || mentor.email;
-    if (approved) {
-      await loadMessages();
-      socket.emit("mark_seen", { other_id: mentor.id });
-    } else {
-      chatWindow.innerHTML =
-        '<div class="small">Waiting for mentor approval to chat.</div>';
+    await loadMessages();
+    socket.emit("mark_seen", { other_id: mentor.id });
+
+    if (selectedCardElement) {
+      selectedCardElement.style.backgroundColor = "";
+      selectedCardElement.style.borderColor = "#ccc";
     }
+    cardElement.style.backgroundColor = "#e6f0ff";
+    cardElement.style.borderColor = "#3399ff";
+    selectedCardElement = cardElement;
   }
 
   async function loadMessages() {
-    if (!mentor) return;
+    if (!selectedMentor) return;
     chatWindow.innerHTML = '<div class="small">Loading messages…</div>';
-    const res = await fetch("/api/messages/" + mentor.id);
+    const res = await fetch("/api/messages/" + selectedMentor.id);
     const json = await res.json();
     if (json.error) {
-      chatWindow.innerHTML =
-        '<div class="small">' + escape(json.error) + "</div>";
+      chatWindow.innerHTML = `<div class="small">${escape(json.error)}</div>`;
       return;
     }
-
     lastShownTimeByUser = {};
     messages = [];
-
     (json.data || [])
       .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
       .forEach((m) => {
@@ -127,7 +174,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           messages.push(m);
         }
       });
-
     renderMessages();
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
@@ -142,13 +188,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     el.className = "msg " + (m.sender_id === MY_USER_ID ? "me" : "other");
     el.innerHTML = `
       <img class="avatar" src="https://ui-avatars.com/api/?name=${encodeURIComponent(
-        m.sender_id === MY_USER_ID ? "You" : mentor.name || "M"
+        m.sender_id === MY_USER_ID ? "You" : selectedMentor.name || "M"
       )}&background=ddd" />
       <div class="bubble">
         <div class="meta"><strong>${
           m.sender_id === MY_USER_ID
             ? "You"
-            : escape(mentor.name || mentor.email)
+            : escape(selectedMentor.name || selectedMentor.email)
         }</strong> · <span class="small">${new Date(
       m.created_at
     ).toLocaleString()}</span></div>
@@ -164,16 +210,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   async function sendMessage() {
-    if (!mentor) return alert("No mentor assigned or not approved");
+    // ✅ new logic: bypass if any card has the selected background color
+    const hasSelectedCard = Array.from(
+      document.querySelectorAll(".mentor-card")
+    ).some((card) => card.style.backgroundColor === "rgb(230, 240, 255)");
+
+    if (!hasSelectedCard) {
+      return showToast("Please select a mentor before sending messages.");
+    }
+
     const txt = input.value.trim();
     if (!txt) return;
 
     const now = new Date();
     const lastShown = lastShownTimeByUser[MY_USER_ID] || 0;
 
-    // Prevent sending multiple messages within 4 seconds
     if (now.getTime() - lastShown < 4000) {
-      alert("Please wait before sending another message.");
+      showToast("Please wait before sending another message.");
       return;
     }
 
@@ -181,7 +234,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const tempMessage = {
       sender_id: MY_USER_ID,
-      receiver_id: mentor.id,
+      receiver_id: selectedMentor.id,
       message: txt,
       created_at: now.toISOString(),
     };
@@ -194,17 +247,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       socket.emit(
         "send_message",
-        { receiver_id: mentor.id, message: txt },
+        { receiver_id: selectedMentor.id, message: txt },
         (ack) => {
           if (ack && ack.error) {
-            alert("Error: " + ack.error);
+            showToast("Error: " + ack.error);
           }
           input.value = "";
         }
       );
     } catch (err) {
       console.error(err);
-      alert("Network error");
+      showToast("Network error");
     } finally {
       sendBtn.disabled = false;
     }
@@ -212,11 +265,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let typingTimeout = null;
   input.addEventListener("input", () => {
-    if (!mentor) return;
-    socket.emit("typing", { to_id: mentor.id, is_typing: true });
+    if (!selectedMentor) return;
+    socket.emit("typing", { to_id: selectedMentor.id, is_typing: true });
     clearTimeout(typingTimeout);
     typingTimeout = setTimeout(
-      () => socket.emit("typing", { to_id: mentor.id, is_typing: false }),
+      () =>
+        socket.emit("typing", { to_id: selectedMentor.id, is_typing: false }),
       1200
     );
   });
@@ -227,7 +281,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       el = document.createElement("div");
       el.id = "typing-indicator";
       el.className = "typing";
-      el.innerText = mentor.name + " is typing...";
+      el.innerText = selectedMentor.name + " is typing...";
       chatWindow.appendChild(el);
     }
     if (!isTyping && el) {
@@ -250,5 +304,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   }
 
-  await loadMentor();
+  await loadMentors();
 });
