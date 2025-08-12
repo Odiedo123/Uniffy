@@ -19,12 +19,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const profileImg = mentor.profile_image || "/static/img/blackgirl.png";
 
+        // Join courses array into a string or show "No courses"
+        const courseText =
+          mentor.courses && mentor.courses.length > 0
+            ? mentor.courses.join(", ")
+            : "No courses";
+
         card.innerHTML = `
             <div class="img-container">
               <img src="${profileImg}" alt="${mentor.name}" class="mentor-img">
             </div>
             <h3 class="mentor-name">${mentor.name}</h3>
-            <p class="mentor-email">${mentor.email || ""}</p>
+            <p class="mentor-courses">${courseText}</p>
             <button class="mentor-btn" data-id="${mentor.id}">Message</button>
           `;
 

@@ -148,6 +148,10 @@ button {
   margin-top: 100px;
 }
 
+#mentorship-gif {
+  margin-bottom: 30px;
+}
+
 #text-section,
 #img-section {
   display: flex;

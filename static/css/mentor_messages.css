@@ -83,6 +83,7 @@ body {
   font-size: 12px;
   padding: 0px;
   margin-right: 40px;
+  cursor: pointer;
 }
 
 .container {
@@ -111,6 +112,7 @@ body {
   padding: 8px;
   border-radius: 8px;
   cursor: pointer;
+  transition: 0.4s ease;
 }
 
 .request-item:hover {
@@ -160,14 +162,14 @@ body {
   flex: 1;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #eee;
+  border: 3px solid #eee;
 }
 
 .composer button {
   padding: 10px 14px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(90deg, #405de6, #833ab4);
+  background: #f15a24;
   color: #fff;
   cursor: pointer;
 }

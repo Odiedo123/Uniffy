@@ -110,11 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="small">${rec.approved ? "Approved" : "Pending"}</div>
         </div>
         <div class="request-actions">
-          ${
-            rec.approved
-              ? '<button class="open-btn">Open</button>'
-              : '<button class="approve-btn">Approve</button>'
-          }
+          ${rec.approved ? "" : '<button class="approve-btn">Approve</button>'}
         </div>
       `;
       requestsEl.appendChild(el);
@@ -128,10 +124,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             rec.approved = true;
             loadRequests();
           }
-        );
-      } else {
-        el.querySelector(".open-btn").addEventListener("click", () =>
-          selectMentee(s.id)
         );
       }
 

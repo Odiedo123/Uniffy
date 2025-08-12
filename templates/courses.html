@@ -92,53 +92,7 @@
       </div>
       <div class="courses-section">
         <h1 class="section-title">Explore Courses</h1>
-        <div class="course-grid">
-          <div class="course-card">
-            <img src="static/img/coding.jpg" class="course-img" alt="Coding" />
-            <h2 class="course-title">Web Development</h2>
-            <p class="course-desc">
-              HTML, CSS, JavaScript - Frontend Foundations
-            </p>
-            <progress value="70" max="100"></progress>
-            <button class="course-btn">Continue</button>
-          </div>
-
-          <div class="course-card">
-            <img src="static/img/coding.jpg" class="course-img" alt="Coding" />
-            <h2 class="course-title">Web Development</h2>
-            <p class="course-desc">
-              HTML, CSS, JavaScript - Frontend Foundations
-            </p>
-            <progress value="70" max="100"></progress>
-            <button class="course-btn">Continue</button>
-          </div>
-
-          <div class="course-card">
-            <img
-              src="https://img.icons8.com/color/96/000000/artificial-intelligence.png"
-              class="course-img"
-              alt="AI"
-            />
-            <h2 class="course-title">Intro to AI</h2>
-            <p class="course-desc">
-              Understanding the basics of machine learning
-            </p>
-            <progress value="40" max="100"></progress>
-            <button class="course-btn">Continue</button>
-          </div>
-
-          <div class="course-card">
-            <img
-              src="https://img.icons8.com/color/96/000000/physics.png"
-              class="course-img"
-              alt="Physics"
-            />
-            <h2 class="course-title">Physics for Engineers</h2>
-            <p class="course-desc">Mechanics, Thermodynamics, and more</p>
-            <progress value="90" max="100"></progress>
-            <button class="course-btn">Continue</button>
-          </div>
-        </div>
+        <div class="course-grid"></div>
       </div>
     </div>
 
@@ -155,5 +109,6 @@
         });
       });
     </script>
+    <script src="{{ url_for('static', filename='javascript/courses.js') }}"></script>
   </body>
 </html>

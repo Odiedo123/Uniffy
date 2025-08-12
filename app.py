@@ -1,9 +1,6 @@
-# app.py (replace your current backend file with this)
 import os
-# eventlet must be monkey-patched before networking libraries for best compatibility
 import eventlet
 eventlet.monkey_patch()
-
 from flask import (
     Flask,
     request,
@@ -25,40 +22,40 @@ import json
 import bcrypt
 import httpx
 import logging
+import random
 
 load_dotenv()
 
-# --- Basic app setup ---
+#! --- Basic app setup ---
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.secret_key = os.getenv("FLASK_SECRET_KEY") or os.urandom(24)
 
-# Use a single httpx client to reduce connection overhead
+
 _httpx_client = httpx.Client(http2=False, timeout=10.0)
 
-# Create supabase client (service role key for server actions)
+#! Create supabase client (service role key for server actions)
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# SocketIO with eventlet for low-memory async operations
+#! SocketIO with eventlet for low-memory async operations
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
     async_mode="eventlet",
     logger=False,
     engineio_logger=False,
-    max_http_buffer_size=100_000,  # avoid huge payloads
+    max_http_buffer_size=100_000,
 )
 
-# Rate limiter: key uses session user_id if present, otherwise remote address
 limiter = Limiter(
     key_func=lambda: session.get("user_id", get_remote_address()),
     app=app,
     default_limits=["100 per minute"],
 )
 
-# reduce default logging spam
+#! Avoid filling up my terminal
 logging.getLogger("engineio").setLevel(logging.WARNING)
 logging.getLogger("socketio").setLevel(logging.WARNING)
 
@@ -71,7 +68,7 @@ def no_cache(response):
     response.headers["Expires"] = "0"
     return response
 
-# --- Helpers & decorators ---
+#! --- Helpers & decorators ---
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -144,12 +141,8 @@ def quiz_not_taken_required(f):
 
     return decorated_function
 
-
+#! Convert time due to supabase
 def parse_iso_to_utc(dt_str: str) -> datetime:
-    """
-    Parse ISO string returned by supabase to a timezone-aware UTC datetime.
-    Supabase often returns RFC3339 with trailing Z.
-    """
     if not dt_str:
         return None
     try:
@@ -157,19 +150,18 @@ def parse_iso_to_utc(dt_str: str) -> datetime:
             dt_str = dt_str.replace("Z", "+00:00")
         return datetime.fromisoformat(dt_str).astimezone(timezone.utc)
     except Exception:
-        # fallback: try naive parse
         return datetime.strptime(dt_str.split(".")[0], "%Y-%m-%dT%H:%M:%S").replace(
             tzinfo=timezone.utc
         )
 
 
-# ---------- Socket.IO handlers ----------
+# !---------- Socket.IO handlers ----------
 @socketio.on("connect")
 def handle_connect():
-    # get user id from secure flask session (best) or from query string fallback
+    #** get user id from secure flask session (best) or from query string fallback
     user_id = session.get("user_id") or request.args.get("user_id")
     if not user_id:
-        # reject silently: no user id present
+        # **reject silently: no user id present
         return
     room = str(user_id)
     join_room(room)
@@ -199,7 +191,7 @@ def handle_send_message(payload):
         if not receiver_id or not message_text:
             return emit("error", {"error": "Missing fields"})
 
-        # Authorization guard: check mentor-student link depending on account type
+        #! Authorization guard: check mentor-student link depending on account type
         account_type = session.get("account_type")
         if account_type == "student":
             check = (
@@ -225,7 +217,7 @@ def handle_send_message(payload):
                 return emit("error", {"error": "Not authorized to send to this student."})
 
         # Dedupe / coalesce logic:
-        # - If there's a most recent message from sender->receiver within the last 4s:
+        # *If there's a most recent message from sender->receiver within the last 4s:
         #   * if its text == new text -> skip insert, return that existing row
         #   * else -> update that row with new text and updated_at (so only one DB row remains per 4s window)
         four_seconds_ago = datetime.now(timezone.utc) - timedelta(seconds=4)
@@ -244,16 +236,16 @@ def handle_send_message(payload):
             last = recent.data[0]
             last_time = parse_iso_to_utc(last.get("created_at"))
             if last_time and last_time >= four_seconds_ago:
-                # within 4 seconds
+                #! within 4 seconds
                 if (last.get("message") or "").strip() == message_text:
-                    # identical message within window -> return existing row (no DB write)
+                    # !identical message within window -> return existing row (no DB write)
                     emit("send_ack", {"ok": True, "row": last})
-                    # emit to rooms to ensure both sender & receiver see it
+                    # !emit to rooms to ensure both sender & receiver see it
                     socketio.emit("new_message", last, room=str(receiver_id))
                     socketio.emit("new_message", last, room=str(sender_id))
                     return
                 else:
-                    # update last message to newest text (coalesce)
+                    # !update last message to newest text (coalesce)
                     upd = (
                         supabase.table("messages")
                         .update({"message": message_text, "created_at": datetime.now(timezone.utc).isoformat()})
@@ -267,7 +259,7 @@ def handle_send_message(payload):
                     socketio.emit("new_message", updated_row, room=str(sender_id))
                     return emit("send_ack", {"ok": True, "row": updated_row})
 
-        # Otherwise: insert a fresh message row
+        # !Otherwise: insert a fresh message row
         insert_data = {
             "sender_id": sender_id,
             "receiver_id": receiver_id,
@@ -297,7 +289,7 @@ def handle_typing(payload):
         is_typing = bool(payload.get("is_typing"))
         if not from_id or not to_id:
             return
-        # keep a small typing status table update
+        # !keep a small typing status table update
         q = (
             supabase.table("typing_status")
             .select("id")
@@ -358,7 +350,7 @@ def handle_mark_seen(payload):
         emit("error", {"error": str(e)})
 
 
-# ---------- HTTP endpoints ----------
+#! ---------- HTTP endpoints ----------
 @app.route("/")
 def main_page():
     return render_template("index.html")
@@ -446,7 +438,7 @@ def verify_page():
             return render_template("verify.html", name=name, error="No file uploaded.")
 
         try:
-            # lazy import PIL/pytesseract to reduce memory at startup
+            #! lazy import PIL/pytesseract to reduce memory at startup
             from PIL import Image
             import pytesseract
 
@@ -542,13 +534,45 @@ def mentor_messages_page():
         my_user_id=session.get("user_id"),
     )
 
+
+@app.route("/mentor_home")
+@university_verified_required
+@login_required
+def mentor_home_page():
+    user_id = session.get("user_id")
+    user_data = supabase.table("users").select("name").eq("id", user_id).single().execute()
+    name = user_data.data["name"] if user_data.data else "User"
+    return render_template("mentor_home.html", name=name)
+
+
+@app.route("/mentees")
+@university_verified_required
+@login_required
+def mentees_page():
+    return render_template("mentees.html")
+
+
+@app.route("/mentor_analytics")
+@university_verified_required
+@login_required
+def mentor_analytics_page():
+    return render_template("mentor_analytics.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+#! API's starting from here
+
 @app.route("/api/my_mentor")
 @login_required
 @highschool_required
 def api_my_mentor():
     student_id = session.get("user_id")
     
-    # Get all mentor links for the student
+    # !Get all mentor links for the student
     res = (
         supabase.table("mentor_student_links")
         .select("mentor_id, approved")
@@ -694,7 +718,7 @@ def api_send_message():
             if not check.data or not check.data[0].get("approved", False):
                 return jsonify({"error": "Not authorized to send to this student."}), 403
 
-        # duplicate/coalesce behavior
+        #! duplicate/coalesce behavior
         four_seconds_ago = datetime.now(timezone.utc) - timedelta(seconds=4)
         recent = supabase.table("messages").select("id,created_at,message").eq("sender_id", sender_id).eq("receiver_id", receiver_id).order("created_at", desc=True).limit(1).execute()
 
@@ -702,10 +726,10 @@ def api_send_message():
             last = recent.data[0]
             last_time = parse_iso_to_utc(last.get("created_at"))
             if last_time and last_time >= four_seconds_ago:
-                # identical message -> skip
+                # !identical message -> skip
                 if (last.get("message") or "").strip() == message:
                     return jsonify({"ok": True, "row": last})
-                # else update the last row's message (coalesce)
+                #! else update the last row's message (coalesce)
                 upd = supabase.table("messages").update({"message": message, "created_at": datetime.now(timezone.utc).isoformat()}).eq("id", last["id"]).execute()
                 if isinstance(upd, dict) and upd.get("error"):
                     return jsonify({"error": upd["error"]["message"]}), 500
@@ -714,7 +738,7 @@ def api_send_message():
                 socketio.emit("new_message", updated_row, room=str(sender_id))
                 return jsonify({"ok": True, "row": updated_row})
 
-        # otherwise insert new
+        #! otherwise insert new
         insert_data = {"sender_id": sender_id, "receiver_id": receiver_id, "message": message}
         r = supabase.table("messages").insert(insert_data).execute()
         if isinstance(r, dict) and r.get("error"):
@@ -775,22 +799,64 @@ def api_me():
         return jsonify({"data": r.data if hasattr(r, "data") else None})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
 @app.route("/api/university_verified_users")
 @login_required
 @highschool_required
 def api_university_verified_users():
     try:
-        res = (
-            supabase.table("users")
-            .select("*")  # Only existing columns
-            .eq("account_type", "university")  # Only university mentors
-            .eq("is_verified", True)              # Only verified users
+        #! Get the current logged-in student ID
+        student_id = session.get("user_id")
+        if not student_id:
+            return jsonify({"error": "No student ID found in session"}), 400
+
+        # !Step 1: Get mentor IDs linked to this student (approved only)
+        links_res = (
+            supabase.table("mentor_student_links")
+            .select("mentor_id")
+            .eq("student_id", student_id)
+            .eq("approved", True)
             .execute()
         )
+        mentor_ids = [link["mentor_id"] for link in links_res.data] if links_res.data else []
 
-        return jsonify({"data": res.data if hasattr(res, "data") else []})
+        if not mentor_ids:
+            return jsonify({"data": []})  #! No linked mentors
+
+        #! Step 2: Get university mentors info from users table
+        mentors_res = (
+            supabase.table("users")
+            .select("id", "name", "account_type", "is_verified", "created_at")
+            .in_("id", mentor_ids)
+            .eq("account_type", "university")
+            .eq("is_verified", True)
+            .execute()
+        )
+        mentors = mentors_res.data if hasattr(mentors_res, "data") else []
+
+        # !Step 3: Get courses for those mentors from mentor_courses table
+        courses_res = (
+            supabase.table("mentor_courses")
+            .select("mentor_id", "course_name")
+            .in_("mentor_id", mentor_ids)
+            .execute()
+        )
+        courses = courses_res.data if hasattr(courses_res, "data") else []
+
+        #! Step 4: Map mentor_id -> list of courses
+        mentor_courses_map = {}
+        for c in courses:
+            mentor_courses_map.setdefault(c["mentor_id"], []).append(c["course_name"])
+
+        # !Step 5: Add courses list to each mentor's data
+        for mentor in mentors:
+            mentor["courses"] = mentor_courses_map.get(mentor["id"], [])
+
+        return jsonify({"data": mentors})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route("/api/request_mentor", methods=["POST"])
 @login_required
@@ -804,7 +870,7 @@ def api_request_mentor():
         if not mentor_id:
             return jsonify({"error": "Missing mentor_id"}), 400
 
-        # Check if link already exists
+        #! Check if link already exists
         existing_link = supabase.table("mentor_student_links") \
             .select("*") \
             .eq("mentor_id", mentor_id) \
@@ -812,14 +878,14 @@ def api_request_mentor():
             .execute()
 
         if existing_link.data:
-            # Update existing record
+            #! Update existing record
             supabase.table("mentor_student_links") \
                 .update({"approved": True}) \
                 .eq("mentor_id", mentor_id) \
                 .eq("student_id", student_id) \
                 .execute()
         else:
-            # Insert new record
+            # !Insert new record
             supabase.table("mentor_student_links").insert({
                 "mentor_id": mentor_id,
                 "student_id": student_id,
@@ -830,38 +896,63 @@ def api_request_mentor():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-@app.route("/mentor_home")
-@university_verified_required
+@app.route("/api/courses")
 @login_required
-def mentor_home_page():
-    user_id = session.get("user_id")
-    user_data = supabase.table("users").select("name").eq("id", user_id).single().execute()
-    name = user_data.data["name"] if user_data.data else "User"
-    return render_template("mentor_home.html", name=name)
-
-
-@app.route("/mentees")
-@university_verified_required
+@highschool_required
+def api_courses():
+    try:
+        #! Get all courses and their mentors
+        res = (
+            supabase.table("mentor_courses")
+            .select("id, course_name, description, mentor_id, users(name)")
+            .execute()
+        )
+        return jsonify({"data": res.data})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/api/assign_mentor", methods=["POST"])
 @login_required
-def mentees_page():
-    return render_template("mentees.html")
+@highschool_required
+def assign_mentor():
+    try:
+        student_id = session.get("user_id")
+        if not student_id:
+            return jsonify({"error": "User not logged in properly"}), 401
 
+        data = request.json or {}
+        course_name = data.get("course_name")
+        if not course_name:
+            return jsonify({"error": "Course name is required"}), 400
 
-@app.route("/mentor_analytics")
-@university_verified_required
-@login_required
-def mentor_analytics_page():
-    return render_template("mentor_analytics.html")
+        #! Get all mentors teaching this course
+        mentors_res = supabase.table("mentor_courses") \
+            .select("mentor_id") \
+            .eq("course_name", course_name) \
+            .execute()
 
+        if not mentors_res.data:
+            return jsonify({"error": "No mentors found for this course"}), 404
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
+        mentor_ids = [m["mentor_id"] for m in mentors_res.data]
+        chosen_mentor = random.choice(mentor_ids)
 
+        #! Insert link in mentor_student_links, approve immediately
+        supabase.table("mentor_student_links").insert({
+            "student_id": student_id,
+            "mentor_id": chosen_mentor,
+            "approved": True
+        }).execute()
+
+        #! Return mentor_id so JS redirects
+        return jsonify({"mentor_id": chosen_mentor})
+
+    except Exception as e:
+        import traceback
+        print("Error in /api/assign_mentor:", e)
+        traceback.print_exc()
+        return jsonify({"error": f"Internal error: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    # In production on Render, use: gunicorn --worker-class eventlet -w 1 app:app
     debug_mode = os.getenv("FLASK_DEBUG", "false").lower() in ("1", "true")
-    socketio.run(app, debug=debug_mode, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+    socketio.run(app, debug=True, host="0.0.0.0", port=int(os.getenv("PORT", 5000)))

@@ -167,6 +167,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   padding: 25px;
+  max-height: 250px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

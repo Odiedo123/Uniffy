@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const mentorCard = document.createElement("div");
       mentorCard.className = "mentor-card";
       mentorCard.style.cursor = approved ? "pointer" : "not-allowed";
-      mentorCard.style.padding = "8px";
+      mentorCard.style.padding = "18px";
       mentorCard.style.border = "1px solid #ccc";
       mentorCard.style.borderRadius = "8px";
       mentorCard.style.marginBottom = "5px";
@@ -146,10 +146,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (selectedCardElement) {
       selectedCardElement.style.backgroundColor = "";
-      selectedCardElement.style.borderColor = "#ccc";
     }
     cardElement.style.backgroundColor = "#e6f0ff";
-    cardElement.style.borderColor = "#3399ff";
     selectedCardElement = cardElement;
   }
 
