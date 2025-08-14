@@ -77,13 +77,26 @@
           />
 
           <label for="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            autocomplete="off"
-            required
-          />
+          <div class="input-wrapper">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              autocomplete="off"
+              required
+            />
+            <!-- Eye SVG -->
+            <svg
+              id="togglePassword"
+              class="toggle-password"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 5c-7.633 0-12 7-12 7s4.367 7 12 7 12-7 12-7-4.367-7-12-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"
+              />
+            </svg>
+          </div>
 
           <label for="account_type">Account Type:</label>
           <select name="account_type" id="account_type" required>
@@ -129,6 +142,17 @@
       if (errorMessage) {
         showToast(errorMessage);
       }
+
+      const passwordInput = document.getElementById("password");
+      const togglePassword = document.getElementById("togglePassword");
+
+      togglePassword.addEventListener("click", () => {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+      });
     </script>
   </body>
 </html>

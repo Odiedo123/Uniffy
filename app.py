@@ -20,7 +20,7 @@ from flask_socketio import SocketIO, join_room, leave_room, emit
 import tempfile
 import json
 import bcrypt
-import httpx
+import httpx 
 import logging
 import random
 
@@ -31,7 +31,7 @@ app = Flask(__name__, static_folder="static", template_folder="templates")
 app.secret_key = os.getenv("FLASK_SECRET_KEY") or os.urandom(24)
 
 
-_httpx_client = httpx.Client(http2=False, timeout=10.0)
+_httpx_client = httpx.Client(http2=False, timeout=20.0)
 
 #! Create supabase client (service role key for server actions)
 SUPABASE_URL = os.getenv("SUPABASE_URL")

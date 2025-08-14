@@ -149,7 +149,7 @@ button {
 }
 
 #mentorship-gif {
-  margin-bottom: 30px;
+  margin-bottom: 150px;
 }
 
 #text-section,
@@ -253,7 +253,8 @@ button {
   width: 100vw;
   gap: 20px;
 }
-#security {
+
+#card {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -265,13 +266,13 @@ button {
   gap: 10px;
   cursor: pointer;
   border: 1px solid #26293c;
-  background-color: rgba(255, 255, 255, 0.637);
+  background-color: rgba(255, 255, 255, 0.753);
   z-index: 1;
   overflow: hidden;
   transition: 0.2s ease;
 }
 
-#security:hover {
+#card:hover {
   border: 1px solid rgb(44, 183, 230);
   transform: translateY(-10px);
 }
@@ -287,13 +288,13 @@ button {
   margin-bottom: 10px;
 }
 
-.security-img {
+.card-img {
   height: 80px;
   width: 80px;
   border-radius: 50%;
 }
 
-#security-icon1 {
+#card-icon1 {
   height: 80px;
   width: 80px;
 }
@@ -326,7 +327,7 @@ button {
 
 .footer-divider {
   width: 2px;
-  height: 250px;
+  height: 270px;
   background: linear-gradient(to bottom, #4ee1ec, #2104e0);
   border-radius: 10px;
   opacity: 0.8;
@@ -368,7 +369,14 @@ button {
 }
 
 #email {
-  margin-top: 20px;
+  margin-top: 40px;
+  color: #b3bacc;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+#phone {
+  margin-top: -5px;
   color: #b3bacc;
   font-size: 17px;
   cursor: pointer;
