@@ -25,7 +25,7 @@ body {
   align-items: center;
   padding: 12px 18px;
   background: #fff;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0, 62, 168, 0.178);
   height: 70px;
 }
 
@@ -52,7 +52,7 @@ body {
   background: var(--panel);
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #f0f0f0;
+  border: 1px solid rgba(0, 62, 168, 0.178);
 }
 
 .chat {
@@ -60,14 +60,14 @@ body {
   display: flex;
   flex-direction: column;
   background: var(--panel);
-  border: 1px solid #eee;
+  border: 1px solid rgba(0, 62, 168, 0.178);
   border-radius: 10px;
   overflow: hidden;
 }
 
 .chat-header {
   padding: 12px 16px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid rgba(0, 62, 168, 0.178);
 }
 
 .chat-window {
@@ -84,7 +84,7 @@ body {
   display: flex;
   gap: 8px;
   padding: 12px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid rgba(0, 62, 168, 0.178);
 }
 
 .composer input {

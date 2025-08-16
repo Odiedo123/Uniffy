@@ -10,14 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
         card.classList.add("course-card");
 
         card.innerHTML = `
-                    <img src="${
-                      course.image_url || "static/img/coding.jpg"
-                    }" class="course-img" alt="${course.course_name}" />
-                    <h2 class="course-title">${course.course_name}</h2>
-                    <p class="course-desc">${course.description || ""}</p>
-                    <progress value="0" max="100"></progress>
-                    <button class="course-btn">Try it Out</button>
-                `;
+              <img src="https://picsum.photos/1280/720?random=${encodeURIComponent(
+                course.course_name
+              )}
+              )}" 
+              class="course-img" alt="${course.course_name}" />
+
+              <h2 class="course-title">${course.course_name}</h2>
+              <p class="course-desc">${course.description || ""}</p>
+              <progress value="0" max="100"></progress>
+              <button class="course-btn">Try it Out</button>
+          `;
 
         card.querySelector(".course-btn").addEventListener("click", () => {
           fetch("/api/assign_mentor", {
